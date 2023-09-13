@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+    <script src="/assets/vendors/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+
+                        <div class="col-md-5">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+
+                                    <div class="position-relative row form-group">
+                                        <input id="idUser" type="hidden" value="<%= user.id %>">
+                                        <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="name">
+                                                <div class="input-group">
+                                                    <input name="name" id="name" placeholder="Nama" type="text" class="form-control" data-default="<%= user.name %>" value="<%= user.name %>">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="email">
+                                                <div class="input-group">
+                                                    <input name="email" id="email" placeholder="Email" type="email" class="form-control" data-default="<%= user.email %>" value="<%= user.email %>">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="phone" class="col-sm-3 col-form-label">Phone</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="hp">
+                                                <div class="input-group">
+                                                    <input name="hp" id="phone" placeholder="Handphone" type="number" class="form-control" data-default="<%= user.hp %>" value="<%= user.hp %>">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="username" class="col-sm-3 col-form-label">Username</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="username">
+                                                <div class="input-group">
+                                                    <input name="username" id="username" placeholder="Username" type="text" class="form-control" data-default="<%= user.username %>" value="<%= user.username %>">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="password" class="col-sm-3 col-form-label">Password</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="password">
+                                                <div class="input-group">
+                                                    <input name="password" id="password" placeholder="* * * * * *" type="password" class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="divisi" class="col-sm-3 col-form-label">DIVISI</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="code_kerja">
+                                                <div class="input-group">
+                                                    <select name="code_kerja" id="divisi" class="custom-select" data-default="<%= user.code_kerja %>">
+                                                        <% let arr = ['MEP','SIPIL','ALL','HSE'] %>
+                                                        <% for(let i = 0; i < 4; i++) { %>
+                                                            <% let selected = user.code_kerja == i ? 'selected' : '' %>
+                                                            <option value="<%= i %>" <%= selected %>><%= arr[i] %></option>
+                                                        <% } %>
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="level" class="col-sm-3 col-form-label">LEVEL</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="level">
+                                                <div class="input-group">
+                                                    <select name="level" id="level" class="custom-select" data-default="<%= user.level %>">
+                                                        <option value=""></option>
+                                                        <% const arrayLevel = ['staff','site logistic','site engineer','site hse','site manager','project manager','cost controll','hse officer','purchasing','director','po','finance','payment','logistic','admin'] %>
+                                                        <% for (let i = 0; i < arrayLevel.length; i++) { %>
+                                                            <option value="<%= arrayLevel[i] %>" <%= user.level == arrayLevel[i] ? 'selected' : '' %>><%= arrayLevel[i] %></option>
+                                                        <% } %>
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="project" class="col-sm-3 col-form-label">PROJECT</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="project">
+                                                <div class="input-group">
+                                                    <select name="project" id="project" class="custom-select" data-default="<%= user.project %>">
+                                                        <% for (let ii = 0; ii < project.length; ii++) { %>
+                                                            <% selected = project[ii].name == user.project ? 'selected' : '' %>
+                                                            <option value="<%= project[ii].name %>" <%= selected %>><%= project[ii].name %></option>
+                                                        <% } %>
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="status" class="col-sm-3 col-form-label">STATUS</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="admin_status">
+                                                <div class="input-group">
+                                                    <select name="admin_status" id="status" class="custom-select" data-default="<%= user.admin_status %>">
+                                                        <% let arrStatus = ['INACTIVE','ACTIVE','BANNED'] %>
+                                                        <% for (i = 0; i < 3; i++) { %>
+                                                            <% selected = user.admin_status == i ? 'selected' : '' %>
+                                                            <option value="<%= i %>" <%= selected %>><%= arrStatus[i] %></option>
+                                                        <% } %>
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+
+                                    <div class="text-center">
+                                        <img src="/assets/images/avatars/<%= locals.user.picture ? user.picture : 'default.png' %>" height="135" class="rounded avatar-small shadow">
+                                    </div>
+
+                                    <hr>
+
+                                    <div id="all-project" class="d-flex justify-content-center flex-wrap">
+                                        <% for (let i = 0; i < project.length; i++) { %>
+                                            <button class="btn btn-outline-primary mx-1 mb-2 update-project font-weight-bold" data-id="<%= project[i].id %>"><%= project[i].name %></button>
+                                        <% } %>
+                                    </div>
+
+                                    <hr>
+                                    
+                                    <div id="penugasan-project" class="d-flex justify-content-center flex-wrap">
+                                        <% for(let i = 0; i < penugasan.length; i++) { %>
+                                            <button class="btn btn-outline-success mx-1 mb-2 update-project font-weight-bold" data-id="<%= penugasan[i].idProject %>"><%= penugasan[i].project %></button>
+                                        <% } %>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+                <script src="/assets/scripts/userUpdate.js"></script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

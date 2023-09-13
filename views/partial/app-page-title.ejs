@@ -1,0 +1,43 @@
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                <i class="pe-7s-car icon-gradient bg-mean-fruit"></i>
+            </div>
+            <div><%= locals.pageTitle ? pageTitle : '' %>
+                <div><small><%- locals.pageTitleDesc ? pageTitleDesc : '' %></small></div>
+            </div>
+        </div>
+        <div class="page-title-actions">
+            
+            <!--button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
+                <i class="fa fa-star"></i>
+            </button-->
+
+            <div class="d-inline-block dropdown">
+                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fa fa-business-time fa-w-20"></i>
+                    </span>
+                    Check Me !
+                    <div id="notif-count" class="badge badge-light"> - </div>
+                </button>
+                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right dropdown-list-wrapped">
+                    <ul id="notifikasi" class="no-bullets px-2">
+                        <li class="nav-item row">
+                            <a href="javascript:void(0);" class="nav-link">
+                                <div class="icon-circle">
+                                    <i class="pe-7s-mail"></i>
+                                </div>
+                                <div>
+                                    <b>${data[1][i].type}</b><br>
+                                    ${data[1][i].name}
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

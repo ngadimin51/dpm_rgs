@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="card mb-3 widget-content bg-plum-plate">
+                                <div class="widget-content-wrapper text-dark">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">
+                                            <button class="mb-2 mr-2 btn btn-dark">
+                                                Total SPK
+                                                <span class="badge badge-pill badge-warning">
+                                                    <%= spk.length %>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-white">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="card mb-3 widget-content bg-plum-plate">
+                                <div class="widget-content-wrapper text-dark">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">
+                                            <button class="mb-2 mr-2 btn btn-dark">
+                                                Total Nilai SPK
+                                                <span class="badge badge-pill badge-warning">
+                                                    <%= totalNilaiSpk.toLocaleString('id-ID', {style: "currency", currency: "IDR"}) %>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-white">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="card mb-3 widget-content bg-plum-plate">
+                                <div class="widget-content-wrapper text-dark">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">
+                                            <button class="mb-2 mr-2 btn btn-dark">
+                                                Total Nilai Terbayar
+                                                <span class="badge badge-pill badge-warning">
+                                                    <%= totalProgressSpk.toLocaleString('id-ID', {style: "currency", currency: "IDR"}) %>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-white">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="card mb-3 widget-content bg-plum-plate">
+                                <div class="widget-content-wrapper text-dark">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">
+                                            <button class="mb-2 mr-2 btn btn-dark">
+                                                Total Nilai Sisa Bayar
+                                                <span class="badge badge-pill badge-warning">
+                                                    <%= (totalNilaiSpk - totalProgressSpk).toLocaleString('id-ID', {style: "currency", currency: "IDR"}) %>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-white">
+                                            <i class="fas fa-project-diagram"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="px-3 pt-3">
+                                    <button id="tambah-spk" class="btn btn-danger float-right">tambah</button>
+                                </div>
+                                <% if (spk.length > 0) { %>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <% for (let i = 0; i < spk.length; i++) { %>
+                                            <div class="col-sm-6">
+                                                <a href="/spk_control?project=<%= project %>&mandor_id=<%= spk[i].mandor_id %>">
+                                                    <div class="card mb-3 widget-content bg-plum-plate">
+                                                        <div class="widget-content-wrapper text-dark">
+                                                            <div class="widget-content-left">
+                                                                <div class="widget-heading">
+                                                                    <button class="mb-2 mr-2 btn btn-dark">
+                                                                        <%= spk[i].mandor_nama %>
+                                                                        <span class="badge badge-pill badge-warning">
+                                                                            <%= spk[i].total_spk %>
+                                                                        </span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="widget-content-right">
+                                                                <div class="widget-numbers text-white">
+                                                                    <i class="fas fa-project-diagram"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <% } else { %>
+                                    <div class="d-flex justify-content-center py-2 font-weight-bold">
+                                        TIDAK ADA DATA
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+
+                    $('.table').dataTable()
+
+                    $(document).on('click', '#tambah-spk', async function() {
+                        const project = urlParams.get('project')
+                        const form = `<div class="row">
+                            <div class="col-sm-6">
+                                <label for="spk-nomor">SPK Nomor</label>
+                                <input id="spk-nomor" type="text" class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="mandor">Mandor</label>
+                                <select id="mandor" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="nilai-spk">Nilai SPK</label>
+                                <input id="nilai-spk" type="number" class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="nilai-pembayaran">Nilai Pembayaran</label>
+                                <input id="nilai-pembayaran" type="number" class="form-control">
+                            </div>
+                        </div>
+                        <label for="jenis-pekerjaan">Jenis Pekerjaan</label>
+                        <input id="jenis-pekerjaan" type="text" class="form-control">
+                        <label for="catatan">Catatan</label>
+                        <textarea class="form-control" id="catatan"></textarea>`
+                        await getMandor()
+                        swal.fire({
+                            width: 800,
+                            title: `Tambah SPK PROJECT<br>${project}`,
+                            html: form,
+                            confirmButtonText: 'SUBMIT',
+                            showCancelButton: true,
+                            allowOutsideClick: false,
+                            preConfirm: () => {
+                                const spkNomor = document.getElementById('spk-nomor')
+                                const mandor = document.getElementById('mandor')
+                                const jenisPekerjaan = document.getElementById('jenis-pekerjaan')
+                                const nilai = document.getElementById('nilai-spk')
+                                const pembayaran = document.getElementById('nilai-pembayaran')
+                                const catatan = document.getElementById('catatan')
+                                if (!spkNomor.value) {
+                                    spkNomor.focus()
+                                    return swal.showValidationMessage('Isikan Nomor SPK')
+                                }
+                                if (!mandor.value) {
+                                    mandor.focus()
+                                    return swal.showValidationMessage('Pilih mandor')
+                                }
+                                if (!jenisPekerjaan.value) {
+                                    jenisPekerjaan.focus()
+                                    return swal.showValidationMessage('Pilih mandor')
+                                }
+                                if (!nilai.value) {
+                                    nilai.focus()
+                                    return swal.showValidationMessage('Nilai SPK')
+                                }
+                                if (!pembayaran.value) {
+                                    pembayaran.focus()
+                                    return swal.showValidationMessage('Nilai Pembayaran')
+                                }
+                                if (!catatan.value) {
+                                    catatan.focus()
+                                    return swal.showValidationMessage('Catatan Wajib diisi')
+                                }
+                                return postData('/spk_control/check_spk', {spkNomor: spkNomor.value.trim()})
+                                .then ( e => {
+                                    if (e.length > 0) {
+                                        spkNomor.focus()
+                                        return swal.showValidationMessage('Nomor SPK Sudah terdaftar')
+                                    }
+                                    return {spkNomor: spkNomor.value, project, mandor: mandor.value, jenisPekerjaan: jenisPekerjaan.value, nilai: nilai.value, pembayaran: pembayaran.value, catatan: catatan.value}
+                                })
+                            }
+                        })
+                        .then ( e => {
+                            if (e.isConfirmed) {
+                                postData('/spk_control/tambah_spk', e.value)
+                                .then ( response => {
+                                    // console.log(response)
+                                    if (response.status == 'success') {
+                                        location.href = `/spk_control?project=${response.project}&mandor_id=${response.mandor}&nomor_spk=${response.spkNomor}`
+                                    } else {
+                                        toastFailed(response.message)
+                                    }
+                                })
+                            }
+                        })
+                    })
+
+                    async function getMandor() {
+                        fetch('/API/getMandor')
+                        .then ( response => response.json())
+                        .then ( e => {
+                            let opt = ''
+                            opt += `<option value=""> ~ </option>`
+                            for (let i = 0; i < e.length; i++) {
+                                opt += `<option value="${e[i].mandor_id}">${e[i].mandor_nama}</option>`
+                            }
+                            document.getElementById('mandor').innerHTML = opt
+                            const choise = new Choices('#mandor')
+                        })
+                    }
+
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

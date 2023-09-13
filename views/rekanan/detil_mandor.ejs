@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+
+                                    <form id="form-update-mandor" data-id="<%= mandor.mandor_id %>">
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="position-relative form-group">
+                                                    <label for="nama" class="">Nama</label>
+                                                    <input name="nama" id="nama" placeholder="Nama Mandor" type="text" class="form-control" value="<%= mandor.mandor_nama %>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="position-relative form-group">
+                                                    <label for="hp" class="">Hp</label>
+                                                    <input name="hp" id="hp" placeholder="Hp Mandor" type="number" class="form-control" value="<%= mandor.mandor_hp %>">
+                                                    <input type="hidden" name="defaultHp" value="<%= mandor.mandor_hp %>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="position-relative form-group">
+                                            <label for="alamat" class="">Address</label>
+                                            <input name="alamat" id="alamat" placeholder="Alamat" type="text" class="form-control"  value="<%= mandor.mandor_alamat %>">
+                                        </div>
+                                        <button class="mt-2 btn btn-primary">Simpan</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+
+                    const formUpdateMandor = document.querySelector('#form-update-mandor')
+                    const id = formUpdateMandor.getAttribute('data-id')
+                    if (formUpdateMandor) {
+                        formUpdateMandor.addEventListener('submit', (e) => {
+                            e.preventDefault()
+                            const formData = new FormData(formUpdateMandor)
+                            let data = {}
+                            formData.forEach( (val, key) => {
+                                data[key] = val
+                            })
+                            data.id = id
+                            postData('/rekanan/mandor/update', data)
+                            .then ( resp => {
+                                if (resp.status == 'success') {
+                                    toastSuccess(resp.message)
+                                    $("[name='defaultHp']").val($('#hp').val())
+                                } else {
+                                    toastFailed(resp.message)
+                                }
+                            })
+                        })
+                    }
+
+                </script>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

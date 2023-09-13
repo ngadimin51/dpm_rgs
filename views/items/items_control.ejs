@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+    <script src="/assets/vendors/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/assets/vendors/data-Tables/jquery.dataTables.min.css">
+    <script src="/assets/vendors/data-Tables/jquery.dataTables.min.js"></script>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+                    
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    <b>Item akan tersedia untuk semua project</b>
+                                    <button id="atur-satuan-button" class="ml-2 btn btn-warning float-right">Atur Satuan</button>
+                                    <button id="tambah-satuan-button" data-toggle="modal" data-target="#tambah-item" class="btn btn-danger float-right">Tambah Items</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" id="satuan"></div>
+
+                    <div class="row">
+                        
+                        <% for(let i = 0; i < item.length; i++) { %>
+                            <div class="col-md-4">
+                                <a href="/items_control?pekerjaan=<%= item[i].pekerjaan %>">
+                                    <div class="card mb-3 widget-content bg-vicious-stance">
+                                        <div class="widget-content-wrapper text-dark">
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">
+                                                    <button class="mb-2 mr-2 btn btn-danger"><%= item[i].pekerjaan %><span class="badge badge-pill badge-light"><%= item[i].jumlah %></span></button>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="widget-numbers text-white">
+                                                    <i class="fas fa-people-carry shadow"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <% } %>
+
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+                <script src="/assets/scripts/items.js"></script>
+
+            </div>
+        </div>
+
+        <div id="tambah-item" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Item</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="add-item">
+                        <div class="modal-body">
+                            <label for="name">Nama Item</label>
+                            <input type="text" name="name" id="name" class="form-control">
+                            <label for="pekerjaan">Pekerjaan</label>
+                            <select name="pekerjaan" id="pekerjaan" class="form-control">
+                                <% for(let i = 0; i < pekerjaan.length; i++) { %>
+                                    <option value="<%= pekerjaan[i].pekerjaan %>"><%= pekerjaan[i].pekerjaan %></option>
+                                <% } %>
+                            </select>
+                            <label for="unit">Unit / Satuan</label>
+                            <select name="unit" id="unit" class="form-control">
+                                <% for(let i = 0; i < unit.length; i++) { %>
+                                    <option value="<%= unit[i].name %>"><%= unit[i].name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="save-item" type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const addItem = document.querySelector('#add-item')
+        addItem.addEventListener('submit', async (e) => {
+            e.preventDefault()
+            const form = new FormData(addItem)
+            let data = {}
+            let post = false
+            try {
+                form.forEach((val, key) => {
+                    // console.log({key, val})
+                    data[key] = val
+                    if (!val) {
+                        throw data
+                        console.log("error "+key)
+                    }
+                    post = true
+                })
+            } catch (error) {
+                if (error !== data) throw data
+            }
+            if (!post) {
+                return  toastFailed("Check form")
+            }
+            const dataPost = await postData(url = '/items_control/submit_item', data)
+            if (dataPost.status !== 'success') {
+                return  toastFailed(dataPost.message)
+            }
+            toastSuccess(dataPost.message)
+            addItem.reset()
+        })
+    </script>
+</body>
+</html>

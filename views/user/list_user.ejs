@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card px-2">
+                                <div class="d-flex justify-content-end my-2">
+                                    <button data-toggle="modal" data-target="#modalTambahUser" class="btn btn-sm btn-danger">TAMBAH USER</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover table-striped">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">Nama</th>
+                                                <th class="text-center">Level</th>
+                                                <th class="text-center">Penugasan</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-center">Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(let i = 0; i < users.length; i++) { %>
+                                                <tr>
+                                                    <td><%= i + 1 %></td>
+                                                    <td><%= users[i].name %></td>
+                                                    <td><%= users[i].level %></td>
+                                                    <td><%= users[i].project %></td>
+                                                    <td><%= users[i].status %></td>
+                                                    <td>
+                                                        <a href="/list_users/<%= users[i].id%>" class="btn btn-sm btn-success">
+                                                            UPDATE
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+                <%- include('../partial/footer') %>
+                
+            </div>
+            
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalTambahUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tambah User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form-tambah-user">
+                    <div class="modal-body">
+                        <label for="name">Nama</label>
+                        <input type="text" name="name" class="form-control mb-2">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" class="form-control mb-2">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" class="form-control mb-2">
+                        <label for="hp">Hp</label>
+                        <input type="number" name="hp" class="form-control mb-2">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control mb-2">
+                        <label for="project">Project</label>
+                        <select name="project" id="project" class="form-control mb2">
+                            <option value=""></option>
+                            <% for (let i = 0; i < project.length; i++) { %>
+                                <option value="<%= project[i].name %>"><%= project[i].name %></option>
+                            <% } %>
+                        </select>
+                        <label for="level">Level</label>
+                        <select name="level" id="level" class="form-control mb2">
+                            <option value=""></option>
+                            <% const arrayLevel = ['staff','site logistic','site engineer','site hse','site manager','project manager','cost controll','hse officer','purchasing','director','po','finance','payment','logistic'] %>
+                            <% for (let i = 0; i < arrayLevel.length; i++) { %>
+                                <option value="<%= arrayLevel[i] %>"><%= arrayLevel[i] %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('.table').dataTable()
+    </script>
+
+    <script src="/assets/scripts/userUpdate.js"></script>
+
+</body>
+</html>

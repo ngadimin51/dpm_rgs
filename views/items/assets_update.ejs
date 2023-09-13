@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+
+                                    <button id="add-record" class="btn btn-danger">ADD RECORD</button>
+
+                                    <div id="table-assets" class="table-responsive">
+                                        <table class="table table-sm table-hover table-striped">
+                                            <thead class="table-dark text-center">
+                                                <tr>
+                                                    <th class="align-middle">#</th>
+                                                    <th class="align-middle">ITEM</th>
+                                                    <th class="align-middle">QTY</th>
+                                                    <th class="align-middle">QTY OUT</th>
+                                                    <th class="align-middle">KONDISI</th>
+                                                    <th class="align-middle">KETERANGAN</th>
+                                                    <th class="align-middle">TANGGAL TRANSAKSI</th>
+                                                    <th class="align-middle">MENU</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody">
+                                                <% for (let i = 0; i < assets.length; i++) { %>
+                                                    <tr id="<%= assets[i].asset_id %>">
+                                                        <td><%= i+1 %></td>
+                                                        <td id="<%= assets[i].asset_id %>-nama"><%= assets[i].asset_name %></td>
+                                                        <td id="<%= assets[i].asset_id %>-qty" class="text-center"><%= assets[i].asset_qty %></td>
+                                                        <td id="<%= assets[i].asset_id %>-qty-out" class="text-center"><%= assets[i].asset_qty_out %></td>
+                                                        <td id="<%= assets[i].asset_id %>-kondisi" class="text-center"><%= assets[i].asset_kondisi %></td>
+                                                        <td id="<%= assets[i].asset_id %>-keterangan" class="text-center"><%= assets[i].asset_keterangan %></td>
+                                                        <td id="<%= assets[i].asset_id %>-tanggal" class="text-center"><%= assets[i].asset_tanggal > 0 ? assets[i].asset_tanggal.toLocaleDateString()+' '+assets[i].asset_tanggal.toLocaleTimeString() : '' %></td>
+                                                        <td class="text-center">
+                                                            <button class="btn btn-sm btn-primary update-assets" id="<%= assets[i].asset_id %>">
+                                                                <i class="pe-7s-menu"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-danger delete-assets" id="<%= assets[i].asset_id %>">
+                                                                <i class="pe-7s-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+
+                    $(document).on('click', '.update-assets', function() {
+                        const id = $(this).attr('id')
+                        const name = $('#'+id+'-nama').html()
+                        const qty = $('#'+id+'-qty').html()
+                        const qtyOut = $('#'+id+'-qty-out').html()
+                        const kondisi = $('#'+id+'-kondisi').html()
+                        const keterangan = $('#'+id+'-keterangan').html()
+
+                        const form = `<div class="row">
+                            <label class="my-1 mr-2" for="nama">Nama</label>
+                            <input class="form-control my-1 mr-sm-2" id="nama" value="${name}">
+                        </div>
+                        <div class="row">
+                            <label class="my-1 mr-2" for="in">Transaksi Ib/Out</label>
+                            <select class="form-control" id="type-transaksi">
+                                <option value=""> - </option>
+                                <option value="in"> In </option>
+                                <option value="out"> Out </option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <label class="my-1 mr-2" for="in">Qty</label>
+                            <input class="form-control my-1 mr-sm-2" id="qty">
+                        </div>
+                        <div class="row">
+                            <label class="my-1 mr-2" for="kondisi">Kondisi</label>
+                            <input class="form-control my-1 mr-sm-2" id="kondisi" value="${kondisi}">
+                        </div>
+                        <div class="row">
+                            <label class="my-1 mr-2" for="keterangan">Keterangan</label>
+                            <input class="form-control my-1 mr-sm-2" id="keterangan" value="${keterangan}">
+                        </div>`
+
+                        swal.fire({
+                            icon: 'warning',
+                            html: form,
+                            confirmButtonText: 'SIMPAN',
+                            showCancelButton: true,
+                            preConfirm: () => {
+                                const namex = document.getElementById('nama').value
+                                const type = document.getElementById('type-transaksi').value
+                                const qtyx = document.getElementById('qty').value
+                                const kondisix = document.getElementById('kondisi').value
+                                const keteranganx = document.getElementById('keterangan').value
+
+                                if (!type) return swal.showValidationMessage('Tentukan jenis transaksi barang keluar / masuk')
+                                if (!qtyx) return swal.showValidationMessage('Tentukan jumlah barang')
+                                
+                                return {id, namex, type, qtyx, kondisix, keteranganx}
+                            }
+                        })
+                        .then( e => {
+                            if (e.isConfirmed) {
+                                console.log(e.value)
+                                postData('/items_control/post_update_laporan_asset', e.value)
+                                .then ( e => {
+                                    if (e.status == 'success') {
+                                        toastSuccess(e.message)
+                                        if (e.data.type == 'in') {
+                                            document.getElementById(e.data.id+'-qty').innerHTML = e.data.qtyx
+                                            document.getElementById(e.data.id+'-qty-out').innerHTML = 0
+                                        } else {
+                                            document.getElementById(e.data.id+'-qty').innerHTML = 0
+                                            document.getElementById(e.data.id+'-qty-out').innerHTML = e.data.qtyx
+                                        }
+                                        const date = new Date(e.data.date)
+                                        document.getElementById(e.data.id+'-nama').innerHTML = e.data.namex
+                                        document.getElementById(e.data.id+'-kondisi').innerHTML = e.data.kondisix
+                                        document.getElementById(e.data.id+'-keterangan').innerHTML = e.data.keteranganx
+                                        document.getElementById(e.data.id+'-tanggal').innerHTML = date.toLocaleDateString('id-ID')+' '+date.toLocaleTimeString('id-ID')
+                                    } else {
+                                        toastFailed(e.message)
+                                    }
+                                })
+                            }
+                        })
+                    })
+
+                    $(document).on('click', '.delete-assets', function() {
+                        const id = $(this).attr('id')
+                        const name = $('#'+id+'-nama').html()
+                        swal.fire({
+                            icon: 'warning',
+                            title: 'HAPUS '+name+' !?',
+                            confirmButtonText: 'HAPUS',
+                            showCancelButton: true
+                        })
+                        .then( e => {
+                            if (e.isConfirmed) {
+                                postData('/items_control/post_delete_laporan_asset', {id, name})
+                                .then( e => {
+                                    if (e.status == 'success' && e.data > 0) {
+                                        toastSuccess(e.message)
+                                        document.location.reload()
+                                    } else if (e.status == 'success' && e.data == 0) {
+                                        toastSuccess(e.message)
+                                        location.replace('/items_control/assets_control')
+                                    } else {
+                                        toastFailed(e.message)
+                                    }
+                                })
+                            }
+                        })
+                    })
+
+
+                    $(document).on('click', '#add-record', function() {
+                        const name = urlParams.get('name')
+
+                        const form = `<div class="row">
+                            <label class="my-1 mr-2" for="nama">Nama</label>
+                            <div class="form-control">${name}</div>
+                        </div>
+                        <div class="row">
+                            <label class="my-1 mr-2" for="in">Transaksi Ib/Out</label>
+                            <select class="form-control" id="type-transaksi">
+                                <option value=""> - </option>
+                                <option value="in"> In </option>
+                                <option value="out"> Out </option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <label class="my-1 mr-2" for="in">Qty</label>
+                            <input class="form-control my-1 mr-sm-2" id="qty">
+                        </div>
+                        <div class="row">
+                            <label class="my-1 mr-2" for="kondisi">Kondisi</label>
+                            <input class="form-control my-1 mr-sm-2" id="kondisi">
+                        </div>
+                        <div class="row">
+                            <label class="my-1 mr-2" for="keterangan">Keterangan</label>
+                            <input class="form-control my-1 mr-sm-2" id="keterangan">
+                        </div>`
+
+                        swal.fire({
+                            icon: 'warning',
+                            html: form,
+                            confirmButtonText: 'SIMPAN',
+                            showCancelButton: true,
+                            preConfirm: () => {
+                                const namex = name
+                                const type = document.getElementById('type-transaksi').value
+                                const qtyx = document.getElementById('qty').value
+                                const kondisix = document.getElementById('kondisi').value
+                                const keteranganx = document.getElementById('keterangan').value
+
+                                if (!type) return swal.showValidationMessage('Tentukan jenis transaksi barang keluar / masuk')
+                                if (!qtyx) return swal.showValidationMessage('Tentukan jumlah barang')
+                                
+                                return {namex, type, qtyx, kondisix, keteranganx}
+                            }
+                        })
+                        .then( e => {
+                            if (e.isConfirmed) {
+                                postData('/API/insertRecord', e.value)
+                                .then ( e => {
+                                    if (e.status == 'success') {
+                                        location.replace('/items_control/update_asset?name='+name)
+                                    } else {
+                                        toastFailed(e.message)
+                                        closeModal('add-record')
+                                    }
+                                })
+                            }
+                        })
+                    })
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

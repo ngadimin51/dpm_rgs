@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+    <script src="/assets/vendors/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/assets/vendors/data-Tables/jquery.dataTables.min.css">
+    <script src="/assets/vendors/data-Tables/jquery.dataTables.min.js"></script>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <button id="tambah-laporan" class="btn btn-danger mr-2">Tambah Laporan</button>
+                                        <div id="btn-report-controll"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="detail-laporan" class="row" data-pekerjaan="<%= JSON.stringify(pekerjaan) %>"></div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <% if (logistic.length > 0) { %>
+                                <div class="card-body table-responsive">
+                                    <b>ALL ITEM</b>
+                                    <table class="table table-sm table-striped table-hover">
+                                        <thead class="text-center table-dark">
+                                            <tr>
+                                                <th class="align-middle">No</th>
+                                                <th class="align-middle">Project</th>
+                                                <th class="align-middle">Item</th>
+                                                <th class="align-middle">IN</th>
+                                                <th class="align-middle">OUT</th>
+                                                <th class="align-middle">Unit / Satuan</th>
+                                                <th class="align-middle">TINDAKAN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (i = 0; i < logistic.length; i++) { %>
+                                                <tr>
+                                                    <td><%= i + 1 %></td>
+                                                    <td><%= logistic[i].log_project %></td>
+                                                    <td><%= logistic[i].name %></td>
+                                                    <td id="<%= logistic[i].log_item %>-in"><%= logistic[i].totalIn.toFixed(2) %></td>
+                                                    <td id="<%= logistic[i].log_item %>-out"><%= logistic[i].totalOut.toFixed(2) %></td>
+                                                    <td><%= logistic[i].unit %></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-success my-1 detail-logistic" data-project="<%= logistic[i].log_project %>" data-item="<%= logistic[i].log_item %>" data-unit="<%= logistic[i].unit %>">detail</button>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <% } else { %>
+                                    <div class="d-flex justify-content-center py-2 font-weight-bold">
+                                        TIDAK ADA DATA
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+                <script src="/assets/scripts/items.js"></script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            width: 5px;
+            background: #f5f5f5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            width: 1em;
+            background-color: #ddd;
+            outline: 1px solid slategrey;
+            border-radius: 1rem;
+        }
+
+        .text-small {
+            font-size: 0.9rem;
+        }
+
+        .messages-box,
+        .chat-box {
+            height: 450px;
+            overflow-y: scroll;
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        input::placeholder {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        #tab-collapse {
+            display: none;
+        }
+
+        .btn-chat {
+            background-color: rgb(64, 34, 238);
+            padding: 10px 0 10px 0;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-chat:hover {
+            cursor: pointer;
+            background-color: rgb(19, 0, 126);
+        }
+
+        .room-list {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .chat-list {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #tab-collapse {
+                display: flex;
+            }
+            #list-group {
+                display: none;
+            }
+            #list-chat {
+                width: 100%;
+                margin: 10px 10px;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <!-- Collapse -->
+                    <div id="tab-collapse" class="row mx-1 py-2">
+                        <div class="col text-center btn-chat room-list">
+                            PROJECTS
+                        </div>
+                        <div class="col text-center btn-chat chat-list">
+                            CHATS
+                        </div>
+                    </div>
+                    <div class="row rounded-lg overflow-hidden shadow">
+                        <!-- Users box-->
+                        <div id="list-group" class="col-4 px-0">
+                            <div class="bg-white">
+                                <div class="bg-gray px-4 py-2 bg-light">
+                                    <p class="h5 mb-0 py-1">Projects</p>
+                                </div>
+                                <div class="messages-box">
+                                    <div class="list-group rounded-0">
+
+                                        <% for(let i = 0; i < project.length; i++) { %>
+                                            <a href="#" class="list-group-item list-group-item-action <%= i == 0 ? 'active' : '' %> rounded-0" data-room="<%= project[i].project %>">
+                                                <div class="media">
+                                                    <img src="/assets/images/project/<%= project[i].picture %>" width="50" height="50" class="rounded-circle avatar-small">
+                                                    <div class="media-body ml-4">
+                                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                                            <h6 class="mb-0"><%= project[i].project %></h6><small class="small font-weight-bold">21 Aug</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        <% }%>
+                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Chat Box-->
+                        <div id="list-chat" class="col px-0">
+                            <div id="message" class="px-4 py-5 chat-box bg-white"></div>
+                    
+                            <!-- Typing area -->
+                            <form id="typing-area" data-room="<%= project[0].project %>" class="bg-light">
+                                <div class="input-group">
+                                    <input type="text" name="message" placeholder="Type a message" aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
+                                    <div class="input-group-append">
+                                        <button id="button-addon2" type="submit" class="btn btn-link"> <i class="fa fa-paper-plane"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                    
+                        </div>
+                      </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+                    const roomList = document.querySelector('.room-list')
+                    const chatList = document.querySelector('.chat-list')
+                    const listGroup = document.querySelector('#list-group')
+                    const listChat = document.querySelector('#list-chat')
+                    const message = document.querySelector('#message')
+                    const typing = document.querySelector('#typing-area')
+
+                    async function firstLoad(){
+                        await socket.emit('getChatting', typing.getAttribute('data-room'))
+                    }
+                    firstLoad()
+
+                    roomList.addEventListener('click', () => {
+                        listGroup.style.display = 'block'
+                        listGroup.classList.remove('col-4')
+                        listGroup.classList.add('col')
+                        listGroup.classList.add('mx-2')
+                        listChat.style.display = 'none'
+                    })
+
+                    chatList.addEventListener('click', () => {
+                        listChat.style.display = 'block'
+                        listChat.classList.remove('col-4')
+                        listChat.classList.add('col')
+                        listChat.classList.add('mx-2')
+                        listGroup.style.display = 'none'
+                    })
+
+                    $(document).on('click', '.list-group-item', function() {
+                        $('.list-group-item').removeClass('active')
+                        $(this).addClass('active')
+                        const dataRoom = $(this).attr('data-room')
+                        typing.setAttribute('data-room', dataRoom)
+                        socket.emit('getChatting', dataRoom)
+                    })
+
+                    typing.addEventListener('submit', (e) => {
+                        e.preventDefault()
+                        const dataRoom = typing.getAttribute('data-room')
+                        const formData = new FormData(typing)
+                        const message = formData.get('message')
+                        document.getElementsByName('message')[0].value = ''
+                        socket.emit('chatting', dataRoom, message)
+                    })
+
+                    var timeoutId = 0;
+                    $(document).on('mousedown', '.media', function() {
+                        timeoutId = setTimeout( () => {
+                            deleteChat($(this))
+                        }, 1000);
+                    }).on('mouseup mouseleave', function() {
+                        clearTimeout(timeoutId);
+                    });
+
+                    function deleteChat(element) {
+                        const id = $(element).attr('data-id')
+                        const dataRoom = $(element).attr('data-room')
+                        const senderId = $(element).attr('data-sender-id')
+                        swal.fire({
+                            icon: 'warning',
+                            title: 'HAPUS PESAN INI?',
+                            confirmButtonText: 'HAPUS',
+                            confirmButtonColor: 'red'
+                        })
+                        .then ( e => {
+                            if (e.isConfirmed) {
+                                socket.emit('hapus-chat', id, dataRoom, senderId)
+                            }
+                        })
+                    }
+
+                    /**
+                     * SOCKET
+                     */
+                    socket.on('chatting', data => {
+                        const id = '<%= userId %>'
+                        
+                        if ( (id * 1) == data.chat_sender_id ) {
+                            chat = `<div class="media ml-5 mb-3" data-id="${data.chat_id}" data-room="${data.chat_room}" data-sender-id="${data.chat_sender_id}">
+                                <div class="media-body">
+                                    <div class="bg-primary rounded py-2 px-3 mb-2 ml-5">
+                                        <p class="text-small mb-0 text-white text-right id-${data.chat_id}">${data.chat_message}</p>
+                                    </div>
+                                    <p class="small text-muted text-right id-${data.chat_id}">${data.chat_time}</p>
+                                </div>
+                            </div>`
+                        } else {
+                            chat = `<div class="media mb-3 mr-5 id-${data.chat_id}"" data-id="${data.chat_id}" data-room="${data.chat_room}" data-sender-id="${data.chat_sender_id}">
+                                <img src="/assets/images/avatars/${data.picture ? data.picture : 'default.png'}" width="42" height="42" class="rounded-circle avatar-small">
+                                <div class="media-body ml-3">
+                                    <div class="bg-light rounded py-2 px-3 mb-2">
+                                        <b>${data.chat_sender}</b>
+                                        <p class="text-small mb-0 text-muted id-${data.chat_id}">${data.chat_message}</p>
+                                    </div>
+                                    <p class="small text-muted id-${data.chat_id}">${data.chat_time}</p>
+                                </div>
+                            </div>`
+                            toastSuccess('Pesan dari '+data.chat_sender)
+                        }
+                        $('#message').append(chat)
+                        $('#message').scrollTop($('#message').prop("scrollHeight"));
+                    })
+
+                    socket.on('getChat', data => {
+                        const id = '<%= userId %>'
+
+                        let chat = ''
+                        for (let i = 0; i < data.length; i++) {
+                            if ( (id * 1) == data[i].chat_sender_id ) {
+                                chat += `<div class="media mb-3" data-id="${data[i].chat_id}" data-room="${data[i].chat_room}" data-sender-id="${data[i].chat_sender_id}">
+                                    <div class="media-body pl-5">
+                                        <div class="bg-primary rounded py-2 px-3 mb-2 ml-5">
+                                            <p class="text-small mb-0 text-white text-right id-${data[i].chat_id}">${data[i].chat_message}</p>
+                                        </div>
+                                        <p class="small text-muted text-right id-${data[i].chat_id}">${data[i].chat_time}</p>
+                                    </div>
+                                </div>`
+                            } else {
+                                chat += `<div class="media mb-3 mr-5" data-id="${data[i].chat_id}" data-room="${data[i].chat_room}" data-sender-id="${data[i].chat_sender_id}">
+                                    <img src="/assets/images/avatars/${data[i].picture ? data[i].picture : 'default.png'}" width="42" height="42" class="rounded-circle avatar-small">
+                                    <div class="media-body ml-3">
+                                        <div class="bg-light rounded py-2 px-3 mb-2">
+                                            <b>${data[i].chat_sender}</b>
+                                            <p class="text-small mb-0 text-muted id-${data[i].chat_id}">${data[i].chat_message}</p>
+                                        </div>
+                                        <p class="small text-muted id-${data[i].chat_id}">${data[i].chat_time}</p>
+                                    </div>
+                                </div>`
+                            }
+                        }
+
+                        message.innerHTML = chat
+
+                        $('#message').scrollTop($('#message').prop("scrollHeight"));
+                    })
+
+                    socket.on('hapus-chat', data => {
+                        const dataRoom = typing.getAttribute('data-room')
+                        if (dataRoom == data.dataRoom) {
+                            const dataId = $('.id-'+data.id).html('<i>Pesan telah dihapus</i')
+                        }
+                    })
+                    
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

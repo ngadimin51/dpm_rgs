@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body table-responsive">
+                                    <label for="pencarian" class="font-weight-bold">PENCARIAN</label>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <select name="" id="" class="form-control">
+                                                <option value="">Item</option>
+                                                <option value="">Supplier</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <% if (po.length > 0) { %>
+                                    <table class="table table-sm table-striped table-hover">
+                                        <thead class="text-center table-dark">
+                                            <tr>
+                                                <th class="align-middle">No</th>
+                                                <th class="align-middle">PO Number</th>
+                                                <th class="align-middle">Status</th>
+                                                <th class="align-middle">Project</th>
+                                                <th class="align-middle">Supplier</th>
+                                                <th class="align-middle">Item</th>
+                                                <th class="align-middle">Nilai PO</th>
+                                                <th class="align-middle">Pembayaran</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (i = 0; i < po.length; i++) { %>
+                                                <tr>
+                                                    <td class="align-top"><%= i + 1 %></td>
+                                                    <td class="align-top">
+                                                        <a href="/purchase_orders?project=<%= po[i].project %>&po_number=<%= po[i].po_number %>">
+                                                            <%= po[i].po_number %>
+                                                        </a>
+                                                    </td>
+                                                    <td class="align-top"><%= po[i].bod_approve %></td>
+                                                    <td class="align-top"><%= po[i].project %></td>
+                                                    <td class="align-top"><%= po[i].supplier %></td>
+                                                    <td class="align-top">
+                                                        <% const itemsList = po[i].items %>
+                                                        <% for (let i = 0; i < itemsList.length; i++) { %>
+                                                            <%= itemsList[i].name %><%- i - 1 != itemsList.length ? ', ' : '' %>
+                                                        <% } %>
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <% let harga = 0; for (let i = 0; i < itemsList.length; i++) {
+                                                            harga += itemsList[i].po_price * itemsList[i].po_qty
+                                                        } %>
+                                                        <button class="btn btn-block border border-primary mb-1 font-weight-bold">
+                                                            <%= harga.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %>
+                                                        </button>
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <% const pembayaranList = po[i].pembayaran %>
+                                                        <% for (let i = 0; i < pembayaranList.length; i++) { %>
+                                                            <button class="btn btn-block border border-primary mb-1 font-weight-bold">
+                                                                <%= pembayaranList[i].po_bayar_nilai.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %>
+                                                            </button>
+                                                        <% } %>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                    <% } else { %>
+                                        <div class="d-flex justify-content-center py-2 font-weight-bold">
+                                            TIDAK ADA DATA
+                                        </div>
+                                    <% } %>
+                                    <i class="btn pe-7s-angle-left-circle pe-3x"></i><i class="btn pe-7s-angle-right-circle pe-3x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

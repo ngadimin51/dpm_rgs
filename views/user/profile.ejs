@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+
+                                    <!-- NAMA -->
+                                    <div class="position-relative row form-group">
+                                        <input id="idUser" type="hidden" value="<%= user.id %>">
+                                        <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="name">
+                                                <div class="input-group">
+                                                    <input name="name" id="name" placeholder="Nama" type="text" class="form-control" data-default="<%= user.name %>" value="<%= user.name %>">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- EMAIL -->
+                                    <div class="position-relative row form-group">
+                                        <label for="email" class="col-sm-3 col-form-label">Email</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="email">
+                                                <div class="input-group">
+                                                    <input name="email" id="email" placeholder="Email" type="email" class="form-control" data-default="<%= user.email %>" value="<%= user.email %>">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- PHONE -->
+                                    <div class="position-relative row form-group">
+                                        <label for="phone" class="col-sm-3 col-form-label">Phone</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="hp">
+                                                <div class="input-group">
+                                                    <input name="hp" id="phone" placeholder="Handphone" type="number" class="form-control no-spin" data-default="<%= user.hp %>" value="<%= user.hp %>">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- USERNAME -->
+                                    <div class="position-relative row form-group">
+                                        <label for="username" class="col-sm-3 col-form-label">Username</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="username">
+                                                <div class="input-group">
+                                                    <input name="username" id="username" placeholder="Username" type="text" class="form-control" data-default="<%= user.username %>" value="<%= user.username %>">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- PASSWORD -->
+                                    <div class="position-relative row form-group">
+                                        <label for="password" class="col-sm-3 col-form-label">Password</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="password">
+                                                <div class="input-group">
+                                                    <input name="password" id="password" placeholder="* * * * * *" type="password" class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button class="update-user btn btn-outline-secondary">SAVE</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- DIVISI -->
+                                    <div class="position-relative row form-group">
+                                        <label for="divisi" class="col-sm-3 col-form-label">DIVISI</label>
+                                        <div class="col-sm-9">
+                                            <div class="input-group">
+                                                <% let arr = ['MEP','SIPIL','ALL','HSE'] %>
+                                                <div class="form-control"><%= arr[user.code_kerja] %></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="level" class="col-sm-3 col-form-label">LEVEL</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="level">
+                                                <div class="input-group">
+                                                    <div class="form-control"><%= user.level %></div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="project" class="col-sm-3 col-form-label">PROJECT</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="project">
+                                                <div class="input-group">
+                                                    <div class="form-control"><%= user.project %></div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <div class="position-relative row form-group">
+                                        <label for="status" class="col-sm-3 col-form-label">STATUS</label>
+                                        <div class="col-sm-9">
+                                            <form class="form-user" data-target="admin_status">
+                                                <div class="input-group">
+                                                    <% let arrStatus = ['INACTIVE','ACTIVE','BANNED'] %>
+                                                    <div class="form-control"><%= arrStatus[user.admin_status] %></div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+
+                                    <div class="text-center">
+                                        <h5 class="font-weight-bold">
+                                            DAFTAR TUGAS PROJECT
+                                        </h5>
+                                    </div>
+
+                                    <hr>
+                                    
+                                    <div id="penugasan-project" class="d-flex justify-content-center flex-wrap">
+                                        <% for(let i = 0; i < penugasan.length; i++) { %>
+                                            <div class="rgs-outline-blue mx-1 mb-2"><%= penugasan[i].project %></div>
+                                        <% } %>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+                <script src="/assets/scripts/userUpdate.js"></script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

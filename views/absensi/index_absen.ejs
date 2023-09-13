@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <% if (userLevel == 'payment' || userLevel == 'director' || userLevel == 'admin') { %>
+                        <div class="row mb-3">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <a href="/absen/control" class="btn btn-danger float-right">Check</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <span id="jam-absen" class="font-weight-bold"></span>
+                                        </div>
+                                        <div>
+                                            <button id="reload-maps" class="btn btn-warning">RELOAD</button>
+                                        </div>
+                                        <div id="button-container"></div>
+                                    </div>
+                                <div>
+
+                                <div id="maps"></div>
+
+                                <div class="table-responsive" style="display: <%= today.length > 0 ? 'block' : 'none' %>;">
+                                    <table class="table table-sm table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Waktu</th>
+                                                <th>Data</th>
+                                                <th>User Agent</th>
+                                                <th>Keterangan</th>
+                                                <th>Check Lokasi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="today-list">
+                                            <% for (let i = 0; i < today.length; i++) { %>
+                                                <tr>
+                                                    <td class="align-top"><%= i + 1 %></td>
+                                                    <td class="align-top"><%= today[i].created.toLocaleDateString()+' '+today[i].created.toLocaleTimeString() %></td>
+                                                    <td class="align-top">
+                                                        <%= today[i].user_ip %>
+                                                        <br>
+                                                        <%= today[i].user_lat %>
+                                                        <br>
+                                                        <%= today[i].user_lon %>
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <%= today[i].user_ua %>
+                                                    </td>
+                                                    <td class="align-top">
+                                                        <%= today[i].user_keterangan %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-light shadow show-map" data-lat="<%= today[i].user_lat %>" data-lon="<%= today[i].user_lon %>">
+                                                            <i class="pe-7s-map pe-2x"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- <% if(today.length > 0) { %>
+                                <% } %> -->
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+            </div>
+
+        </div>
+
+        
+    </div>
+
+    <script>
+
+        function getTime() {
+            const jamAbsen = document.getElementById('jam-absen')
+            const tombolAbsen = document.getElementById('tombol-absen')
+            const date = new Date()
+            let jam = date.getHours()
+            let menit = date.getMinutes()
+            let detik = date.getSeconds()
+            jam = jam < 10 ? '0'+jam : jam
+            menit = menit < 10 ? '0'+ menit : menit
+            detik = detik < 10 ? '0'+ detik : detik
+            const ampm = jam < 12 ? 'AM' : 'PM'
+            time = jam+':'+menit+':'+detik+' '+ampm
+
+            jamAbsen.innerHTML = time
+        }
+
+        getTime()
+
+        setInterval(() => {
+            getTime()
+        }, 1000);
+
+        async function getLocation() {
+            if (navigator.geolocation) {
+                await navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                swal.fire({
+                    icon: 'error',
+                    title: 'GAGAL',
+                    html: 'Browser anda tidak support GEOLOCATION'
+                })
+            }
+        }
+
+        getLocation()
+
+        async function showPosition(position) {
+
+            const lat = position.coords.latitude
+            const lon = position.coords.longitude
+
+            let MAPS = `<iframe 
+                frameborder="0"
+                scrolling="no"
+                marginheight="0"
+                marginwidth="0"
+                src="https://maps.google.com/maps?q=${lat},${lon}&hl=in&z=14&amp;output=embed" style="width: 100%; height: 60vh;">
+            </iframe>`
+
+            document.getElementById("maps").innerHTML = MAPS
+            document.getElementById("maps").setAttribute('lat', lat)
+            document.getElementById("maps").setAttribute('lon', lon)
+            document.getElementById("maps").setAttribute('userAgent', navigator.userAgent)
+            
+            const button = '<button id="submit-absen" class="btn btn-primary">ABSEN</button>'
+            document.getElementById('button-container').innerHTML = button
+            
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    console.log("User denied the request for Geolocation.")
+                    let warning = "Anda harus mengijinkan access lokasi untuk melihat halaman ini. REFRESH Halaman untuk melanjutkan"
+                    swal.fire({icon: "warning", title: warning, allowOutsideClick: false, showConfirmButton: false})
+                break;
+                case error.POSITION_UNAVAILABLE:
+                    console.log("Location information is unavailable.")
+                    warning = "Posisi tidak diketemukan, refresh halaman dan ulangi"
+                    swal.fire({icon: "warning", title: warning, allowOutsideClick: false, showConfirmButton: false})
+                break;
+                case error.TIMEOUT:
+                    warning = "TIMEOUT, refresh halaman dan ulangi"
+                    swal.fire({icon: "warning", title: warning, allowOutsideClick: false, showConfirmButton: false})
+                break;
+                case error.UNKNOWN_ERROR:
+                    console.log("An unknown error occurred.")
+                    warning = "ERROR yang tidak diketahuim refresh halaman dan ulangi"
+                    swal.fire({icon: "warning", title: warning, allowOutsideClick: false, showConfirmButton: false})
+                break;
+            }
+        }
+
+        $('#reload-maps').click(function() {
+            getLocation()
+        })
+
+        $(document).on('click','#submit-absen', function() {
+            const lat = document.getElementById("maps").getAttribute('lat')
+            const lon = document.getElementById("maps").getAttribute('lon')
+            if (!lat || !lon) {
+                getLocation()
+            }
+            swal.fire({
+                title: 'ABSEN',
+                html: `Pastikan lokasi map, sudah sesuai dengan lokasi anda. Jika tidak silahkan tutup menu ini dan tekan tombol reload.
+                <br>
+                <br>
+                <textarea class="form-control" id="keterangan" placeholder="masuk, pulang, tugas keluar, alasan terlambat dll"></textarea>`,
+                confirmButtonText: 'ABSEN',
+                showCancelButton: true,
+                preConfirm: () => {
+                    
+                    const userAgent = document.getElementById("maps").getAttribute('userAgent')
+                    const ket = document.getElementById('keterangan')
+                    if (!ket.value) {
+                        ket.focus()
+                        return swal.showValidationMessage('Isi keterangan')
+                    }
+                    return {lat, lon, ket: ket.value, userAgent}
+                }
+            })
+            .then( e => {
+                if (e.isConfirmed) {
+                    postData('/absen/submit', e.value)
+                    .then ( response => {
+                        if (response.status == 'success') {
+                            toastSuccess(response.message)
+                            const target = $('#today-list')
+                            let row = ''
+                            const today = response.data
+                            for (let i = 0; i < today.length; i++) {
+                                const d = new Date(today[i].created)
+                                // console.log(d)
+                                // console.log(d.toLocaleDateString('id-ID'))
+                                // console.log(d.toLocaleTimeString('id-ID'))
+                                row += `<tr>
+                                    <td class="align-top">${i + 1}</td>
+                                    <td class="align-top">${d.toLocaleDateString()+' '+d.toLocaleTimeString()}</td>
+                                    <td class="align-top">
+                                        ${today[i].user_ip}
+                                        <br>
+                                        ${today[i].user_lat}
+                                        <br>
+                                        ${today[i].user_lon}
+                                    </td>
+                                    <td class="align-top">
+                                        ${today[i].user_ua}
+                                    </td>
+                                    <td class="align-top">
+                                        ${today[i].user_keterangan}
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-light shadow show-map" data-lat="${today[i].user_lat}" data-lon="${today[i].user_lon}">
+                                            <i class="pe-7s-map pe-2x"></i>
+                                        </button>
+                                    </td>
+                                </tr>`
+                            }
+                            // console.log(row)
+                            // table-responsive
+                            today.length  === 1 ? $('.table-responsive').css('display', 'block') : null
+                            $('#today-list').html(row)
+                        } else {
+                            toastFailed(response.message)
+                        }
+                    })
+                }
+            })
+        })
+
+        $(document).on('click', '.show-map', function() {
+            const lat = $(this).attr('data-lat')
+            const lon = $(this).attr('data-lon')
+            let MAPS = `<iframe 
+                frameborder="0"
+                scrolling="no"
+                marginheight="0"
+                marginwidth="0"
+                src="https://maps.google.com/maps?q=${lat},${lon}&hl=in&z=14&amp;output=embed" style="width: 100%; height: 60vh;">
+            </iframe>`
+            document.getElementById("maps").innerHTML = MAPS
+            document.getElementById("maps").removeAttribute('lat')
+            document.getElementById("maps").removeAttribute('lon')
+        })
+
+    </script>
+
+</body>
+</html>

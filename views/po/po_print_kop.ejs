@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="container no-print">
+                        <div class="d-flex justify-content-center align-items center mb-3 no-print">
+                            <% const statusArray = ['error','Pengajuan','Revisi','Approve'] %>
+                            <% const statusColorArray = ['btn-secondary','btn-primary','btn-danger','btn-success'] %>
+                            <div class="col-md-4 no-print">
+                                <button id="approval" data-po-number="<%= po.po_number %>" data-project="<%= po.project %>" data-supplier="<%= po.name %><br>" class="btn btn-sm font-weight-bold no-print <%= statusColorArray[po.bod_approve] %>"><%= statusArray[po.bod_approve] %></button>
+                                Catatan : <%= po.bod_note ? po.bod_note : '-' %>
+                            </div>
+                            <div class="col-md-4 no-print">
+                                <a href="/purchase_orders?project=<%= po.project %>&po_number=<%= po.po_number %>" class="btn btn-sm btn-success font-weight-bold">PRINT (TANPA KOP)</a>
+                                <button id="approval-qr-code" data-po-number="<%= po.po_number %>" data-project="<%= po.project %>" data-supplier="<%= po.name %><br>" class="btn btn-sm font-weight-bold no-print btn-dark"><i class="fas fa-qrcode"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="po-page mb-2">
+                        <div class="scroll">
+                            <page size="A4" class="shadow">
+
+                                <div class="row align-items-center mx-3">
+                                    <div class="col-sm-3">
+                                        <img src="/assets/images/icon_rgs.png" class="img-fluid" style="max-width: 100px;">
+                                    </div>
+                                    <div class="col text-center">
+                                        <h3 class="font-weight-bold">PT. REKATAMA GLOBAL SINERGI</h3>
+                                    </div>
+                                </div>
+
+                                <div class="container-fluid ml-2">
+                                    <%= po.po_number %><br>
+                                    Kepada :<br>
+                                    <div class="ml-3">
+                                        <%= po.name %><br>
+                                        <%- po.address %>
+                                    </div>
+                                    <div class="ml-3">
+                                        UP : <%= po.pic %><br>
+                                        Telp : <%= po.phone %><br>
+                                    </div>
+                                </div>
+
+                                <div class="bg-success font-weight-bold text-center py-2 my-2">
+                                    DETAIL ITEM
+                                </div>
+<!-- <pre><%= JSON.stringify(poDetail, undefined, 2)%></pre> -->
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Project</th>
+                                            <th>Dpm Number</th>
+                                            <th>Item</th>
+                                            <th>Detail</th>
+                                            <th>Jumlah</th>
+                                            <th>Harga</th>
+                                            <th>SUb Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% let total = 0; for (let i = 0; i < poDetail.length; i++) { %>
+                                            <% total += poDetail[i].po_qty * poDetail[i].po_price %>
+                                            <tr>
+                                                <td class="align-top"><%= i + 1 %></td>
+                                                <td class="align-top"><%= poDetail[i].project %></td>
+                                                <td class="align-top"><%= poDetail[i].number %></td>
+                                                <td class="align-top"><%= poDetail[i].name %></td>
+                                                <td class="align-top"><%= poDetail[i].po_item_update %></td>
+                                                <td class="text-right"><%= poDetail[i].po_qty+' '+poDetail[i].unit %></td>
+                                                <td class="text-right"><%= poDetail[i].po_price.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                <td class="text-right"><%= (poDetail[i].po_qty * poDetail[i].po_price).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="7" class="text-right">GRAND TOTAL</th>
+                                            <th class="text-right"><%= total.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <table width="100%" class="mx-2">
+                                    <tbody>
+                                        <tr>
+                                            <td class="align-top">Cara Pembayaran</td>
+                                            <td class="align-top">:</td>
+                                            <td class="align-top"><%= po.payment %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-top">Jadwal</td>
+                                            <td class="align-top">:</td>
+                                            <td class="align-top"><%= po.jadwal %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-top">Alamat</td>
+                                            <td class="align-top">:</td>
+                                            <td class="align-top"><%= po.alamat %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-top">Penerima Material</td>
+                                            <td class="align-top">:</td>
+                                            <td class="align-top"><%= po.penerima %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-top">Syarat penagihan harus melampirkan</td>
+                                            <td class="align-top">:</td>
+                                            <td class="align-top"><%- po.syarat.replace(/\n/g, '<br>') %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-top">catatan</td>
+                                            <td class="align-top">:</td>
+                                            <td class="align-top"><%= po.catatan %></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-top">Pelunasan</td>
+                                            <td class="align-top">:</td>
+                                            <td class="align-top">
+                                                <%= po.bank ? po.bank : '-' %><br>
+                                                <%= po.account ? po.account : '-' %><br>
+                                                <%= po.atas_nama ? po.atas_nama : '-' %>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table width="100%" class="text-center">
+                                    <tbody>
+                                        <tr>
+                                            <td width="50%" style="height: 200px;">
+                                                <% if (locals.qrcode) { %>
+                                                    <% if (qrcode.ver_status == 2) { %>
+                                                        <img id="qrcode" src="" alt="" data-qr="https://dpm.rgsinergi.co.id/verification?type=<%= qrcode.ver_type %>&number=<%= qrcode.ver_number %>&key=<%= qrcode.ver_key %>" data-toggle="tooltip" data-original-title="https://dpm.rgsinergi.co.id/verification?type=<%= qrcode.ver_type %>&number=<%= qrcode.ver_number %>&key=<%= qrcode.ver_key %>" class="img-fluid">
+                                                    <% } %>
+                                                <% } %>
+                                            </td>
+                                            <td class="align-top">Disetujui oleh,</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Ir. Yuris Armanto</b></td>
+                                            <td class="font-weight-bold">
+                                                <%= po.pic %>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </page>
+                        </div>
+                    </div>
+
+                </div>
+
+                <script>
+
+                    const qrCode = document.getElementById('qrcode')
+                    const dataQr = qrCode.getAttribute('data-qr').replace(/&/g, '%26')
+                    if (dataQr) {
+                        fetch('https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl='+dataQr+'&choe=UTF-8&chld-H')
+                        .then((response) => {
+                            response.arrayBuffer().then((buffer) => {
+                                var base64Flag = 'data:image/jpeg;base64,';
+                                var imageStr = arrayBufferToBase64(buffer);
+                                document.getElementById('qrcode').setAttribute('src', base64Flag + imageStr)
+                            });
+                        });
+                    }
+
+                    function arrayBufferToBase64(buffer) {
+                        var binary = '';
+                        var bytes = [].slice.call(new Uint8Array(buffer));
+
+                        bytes.forEach((b) => binary += String.fromCharCode(b));
+
+                        return window.btoa(binary);
+                    }
+
+                </script>
+                
+                <%- include('../partial/footer') %>
+
+                <% if(userLevel == 'director' || userLevel == 'admin') { %>
+                    <script>
+                        const approvalButton = document.getElementById('approval')
+                        approvalButton.addEventListener('click', () => {
+                            swal.fire({
+                                icon: 'warning',
+                                title: 'Ubah Status PO',
+                                html: `<select id="bod_approve" class="form-control mb-2">
+                                    <option value=""></option>
+                                    <option value="1" <%= po.bod_approve == 1 ? 'selected' : '' %>>Pengajuan</option>
+                                    <option value="2" <%= po.bod_approve == 2 ? 'selected' : '' %>>Revisi</option>
+                                    <option value="3" <%= po.bod_approve == 3 ? 'selected' : '' %>>Approve</option>
+                                </select>
+                                <textarea id="bod_note" class="form-control"></textarea>`,
+                                confirmButtonText: 'SUBMIT',
+                                showCancelButton: true,
+                                preConfirm: () => {
+                                    const bodApprove = document.querySelector('#bod_approve')
+                                    const bodNote = document.querySelector('#bod_note')
+                                    const poNumber = document.querySelector('#approval').getAttribute('data-po-number')
+                                    const project = document.querySelector('#approval').getAttribute('data-project')
+                                    const supplier = document.querySelector('#approval').getAttribute('data-supplier')
+                                    if (!bodApprove.value) return swal.showValidationMessage('Pilih Status')
+                                    if (!bodNote.value) return swal.showValidationMessage('Isi catatan')
+                                    return {status: bodApprove.value, note: bodNote.value, poNumber, project, supplier}
+                                }
+                            })
+                            .then ( e => {
+                                if (e.isConfirmed) {
+                                    const data = {status: e.value.status, note: e.value.note, number: e.value.poNumber, project: e.value.project, supplier: e.value.supplier}
+                                    console.log(data)
+                                    putData('/purchase_orders/submit/approval', data)
+                                    .then( e => {
+                                        if (e.status == 'failed') return toastFailed(e.message)
+                                        location.reload()
+                                    })
+                                }
+                            })
+                        })
+                    </script>
+                <% } %>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+                        <% if (locals.project) { %>
+                            <% if (locals.project.length > 0) { %>
+                                <% for (i = 0; i < project.length; i++) { %>
+                                    <div class="col-md-6 col-xl-4">
+                                        <a href="/spk_control?project=<%= project[i].project %>" class="text-dark" style="text-decoration: nonde;">
+                                            <div class="card mb-3 widget-content bg-plum-plate">
+                                                <div class="widget-content-wrapper text-dark">
+                                                    <div class="widget-content-left">
+                                                        <div class="widget-heading">
+                                                            <button class="mb-2 mr-2 btn btn-dark"><%= project[i].project %><span class="badge badge-pill <%= project[i].totalSpk > 0 ? 'badge-warning' : 'badge-light' %>"><%= project[i].totalSpk %></span></button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-content-right">
+                                                        <div class="widget-numbers text-white">
+                                                            <i class="fas fa-project-diagram"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                <% } %>
+                            <% } %>
+                        <% } else { %>
+                            <div class="col-md-12 col-xl-12">
+                                <div class="card mb-3 widget-content" style="height: 120px;">
+                                    <div class="widget-content-outer text-center">
+                                        Tidak ada Project Dalam Database Anda<br>
+                                        Hubungi management untuk penugasan Project
+                                    </div>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

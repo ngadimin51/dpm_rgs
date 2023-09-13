@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+                    <%- include('../partial/app-page-title') %>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    <div class="row" id="inputForm">
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label>Project</label>
+                                            <select name="project" id="project" class="form-control">
+                                                <option value=""> ~ </option>
+                                                <% project.forEach( x => { %>
+                                                    <option value="<%= x.project %>"><%= x.project %></option>
+                                                <% }) %>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label>Item</label>
+                                            <form id="search-item">
+                                                <input type="text" name="item" class="form-control">
+                                                <button class="btn btn-sm btn-primary mt-2" type="submit">search</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
+                                            <label>Pekerjaan</label>
+                                            <select name="pekerjaan" name="pekerjaan" id="pekerjaan" class="form-control">
+                                                <option value=""> ~ </option>
+                                                <% pekerjaan.forEach( x => { %>
+                                                    <option value="<%= x.pekerjaan %>"><%= x.pekerjaan %></option>
+                                                <% }) %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="step2" style="margin-bottom: 10px"></div>
+                                    <!-- Area item pecarian -->
+                                    <div class="row" id="table-result">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Nama Item</th>
+                                                        <th>Unit</th>
+                                                        <th>Pekerjaan</th>
+                                                        <th>Volume</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="item-list"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- data.project = await Project.penugasan(req.userId)
+                                    data.pekerjaan = await Item.getItemPekerjaan()
+                                    data.supplier = await Supplier.supplierActive() -->
+                                    <!-- <pre>
+                                        <%= JSON.stringify(project, undefined, 2) %>
+                                    </pre>
+                                    <pre>
+                                        <%= JSON.stringify(pekerjaan, undefined, 2) %>
+                                    </pre>
+                                    <pre>
+                                        <%= JSON.stringify(supplier, undefined, 2) %>
+                                    </pre> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%- include('../partial/footer') %>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let dataItem = {}
+        let dataSupplier = {}
+        const inputForm = document.querySelector('#inputForm')
+        const tableResult = document.querySelector('#table-result')
+        const target = document.querySelector('#item-list')
+        const searchItem = document.querySelector('#search-item')
+
+        searchItem.addEventListener('submit', async (e) => {
+            e.preventDefault()
+            const project = document.querySelector('#project')
+            const item = document.querySelector('input[name="item"]')
+            const pekerjaan = document.querySelector('#pekerjaan')
+            if (!project.value) {
+                swal.fire({
+                    icon: 'error',title: 'form project is blank'
+                })
+                project.focus()
+                return false
+            }
+            if (!item.value) {
+                swal.fire({
+                    icon: 'error',title: 'form item is blank'
+                })
+                item.focus()
+                return false
+            }
+            if (!pekerjaan.value) {
+                swal.fire({
+                    icon: 'error',title: 'form pekerjaan is blank'
+                })
+                return false
+            }
+            const res = await fetch('/dpm_control/search_item', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({item: item.value, pekerjaan: pekerjaan.value})})
+            const data = await res.json()
+            if (data.status === 'success') {
+                dataItem.project = project.value
+                tableItem(data.data)
+            } else {
+                swal.fire({icon: 'error', title: data.message})
+            }
+        })
+
+        function tableItem(arrayData) {
+            let html = ''
+            for (let i = 0; i < arrayData.length; i++) {
+                const x = arrayData[i]
+                html += `<tr>
+                    <td>${i + 1}</td>
+                    <td>${x.name}</td>
+                    <td>${x.unit}</td>
+                    <td>${x.pekerjaan}</td>
+                    <td>
+                        <input id="qty-${x.id}" type="number" class="form-control" />
+                    </td>
+                    <td>
+                        <button id="button-${x.id}" class="btn btn-sm btn-danger" onclick="saveDataItem(${x.id})" data-name="${x.name}" data-unit="${x.unit}" data-pekerjaan="${x.pekerjaan}">SAVE</button>
+                    </td>
+                </tr>`
+            }
+            target.innerHTML = html
+        }
+        
+        // const supplier = document.querySelector('#supplier')
+        // if (!supplier.value) {
+        //     supplier.focus()
+        //     return swal.fire({title: 'check supplier'})
+        // }
+
+        function saveDataItem(id) {
+            const qty = document.getElementById('qty-'+id)
+            const name = document.getElementById('button-'+id).getAttribute('data-name')
+            const unit = document.getElementById('button-'+id).getAttribute('data-unit')
+            const pekerjaan = document.getElementById('button-'+id).getAttribute('data-pekerjaan')
+            if (!qty.value) {
+                return swal.fire({icon: 'error', title: 'Check Quantity'})
+            }
+            inputForm.innerHTML = `<div class="col-md-6 col-sm-6 col-xs-12">
+                <label>Project</label>
+                <input type="text" class="form-control" readonly value="${dataItem.project}"/>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <label>Item</label>
+                <input type="text" class="form-control" readonly value="${name} - ${unit}"/>
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <label>Supplier</label>
+                <select name="supplier" id="supplier" class="form-control">
+                    <option value=""> ~ </option>
+                    <% supplier.forEach( x => { %>
+                        <option value="<%= x.id %>"><%= x.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <label>Tanggal</label>
+                <input type="date" name="tanggal" id="tanggal" class="form-control" />
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <label>Harga</label>
+                <input type="number" name="price" id="price" class="form-control" step="any">
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <label>Payment</label>
+                <textarea id="payment" class="form-control"></textarea>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <label>Note</label>
+                <textarea id="note" class="form-control"></textarea>
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <button class="btn btn-sm btn-danger mt-2" id="submit-dpm" onclick="submitDpm()">SUBMIT</button>
+            </div>`
+            const choices = new Choices('#supplier');
+            tableResult.style.display = 'none'
+            dataItem = {
+                ...dataItem,
+                id,
+                name,
+                qty: qty.value,
+                unit,
+                pekerjaan
+            }
+        }
+
+        function submitDpm() {
+            const supplier = document.querySelector('#supplier')
+            const tanggal = document.querySelector('#tanggal')
+            const price = document.querySelector('#price')
+            const payment = document.querySelector('#payment')
+            const note = document.querySelector('#note')
+            if ( !supplier.value ) {
+                return supplier.focus()
+            }
+            if ( !tanggal.value ) {
+                return tanggal.focus()
+            }
+            if ( !price.value ) {
+                return price.focus()
+            }
+            if ( !payment.value ) {
+                return payment.focus()
+            }
+            if ( !note.value ) {
+                return note.focus()
+            }
+            dataItem = {...dataItem, supplier: supplier.value, tanggal: tanggal.value, price: price.value, payment: payment.value, note: note.value}
+            // <pre>${JSON.stringify(dataItem, undefined, 2)}</pre>
+            swal.fire({
+                icon: 'warning',
+                title: 'DEBUGGING',
+                html: `Ajukan DPM untuk langsung ke PO`
+            }).then( async e => {
+                if (e.isConfirmed) {
+                    const result = await fetch('/dpm_control/dpm_by_memo_post', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dataItem)})
+                    const data = await result.json()
+                    if (data.status === 'success') {
+                        location.replace(`/dpm_control?number=${data.data.dpmNumber}&id=${data.data.dpmId}`)
+                    } else {
+                        swal.fire({icon: 'error', title: data.message})
+                    }
+                    // console.log(data)
+                }
+            })
+        }
+    </script>
+</body>
+</html>

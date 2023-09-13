@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <% if (spk.length > 0) { %>
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="card mb-3 widget-content bg-vicious-stance mx-3 my-3">
+                                            <div class="widget-content-wrapper text-dark">
+                                                <div class="widget-content-left">
+                                                    <div class="widget-heading">
+                                                        <button class="mb-2 mr-2 btn btn-danger"><%= spk[0].project %><span class="badge badge-pill badge-light"></span></button>
+                                                        <div class="widget-subheading text-white"><%= spk[0].mandor %></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="card mb-3 widget-content bg-vicious-stance mx-3 my-3">
+                                            <div class="widget-content-wrapper text-dark">
+                                                <div class="widget-content-left">
+                                                    <div class="widget-heading">
+                                                        <button class="mb-2 mr-2 btn btn-danger">Nilai SPK<span class="badge badge-pill badge-light"></span></button>
+                                                        <div class="widget-subheading text-white"><%= spk[0].spk_nilai.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></div>
+                                                    </div>
+                                                </div>
+                                                <div class="widget-content-right">
+                                                    <div class="widget-numbers text-white">
+                                                        <button id="ubah-nilai-spk" class="btn btn-warning" data-no-spk="<%= spk[0].spk_nomor %>" data-no-spk="<%= spk[0].spk_nomor %>" data-nilai-spk="<%= spk[0].spk_nilai %>" data-jenis-pekerjaan="<%= spk[0].spk_jenis_pekerjaan %>">
+                                                            <i class="fas fa-info"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <thead class="text-center table-dark">
+                                                <tr>
+                                                    <th class="align-middle">No</th>
+                                                    <th class="align-middle">Nomor SPK</th>
+                                                    <th class="align-middle">Pekerjaan</th>
+                                                    <th class="align-middle">Catatan</th>
+                                                    <th class="align-middle">Tanggal Bayar</th>
+                                                    <th class="align-middle">Terbayar</th>
+                                                    <th class="align-middle">Menu</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% let total = 0; for (i = 0; i < spk.length; i++) { %>
+                                                    <% total += spk[i].spk_progress %>
+                                                    <tr>
+                                                        <td><%= i + 1 %></td>
+                                                        <td><%= spk[i].spk_nomor %></td>
+                                                        <td><%= spk[i].spk_jenis_pekerjaan %></td>
+                                                        <td><%= spk[i].spk_catatan %></td>
+                                                        <td><%= spk[i].spk_tanggal_bayar ? new Date(spk[i].spk_tanggal_bayar).toLocaleDateString('id-ID', {day: "numeric", weekday: "long", month: "long", year: "numeric"}) : '-' %></td>
+                                                        <td class="text-right"><%= spk[i].spk_progress.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                        <td class="text-center">
+                                                            <button id="<%= spk[i].spk_transaksi_id %>" data-spk-nomor="<%= spk[i].spk_nomor %>" data-my-level="<%= userLevel %>" class="btn btn-sm <%= spk[i].spk_verifikasi == 0 ? 'btn-primary' : 'btn-success' %> rounded-circle shadow detail-transaksi" style="width: 36px; height: 36px;">
+                                                                <i class="fas <%= spk[i].spk_verifikasi == 0 ? 'fa-toggle-off' : 'fa-toggle-on' %>"></i>
+                                                            </button>
+                                                            <% if (spk[i].spk_verifikasi == 0) { %>
+                                                                <button data-id="<%= spk[i].spk_transaksi_id %>" data-my-level="<%= userLevel %>" class="btn btn-sm btn-danger shadow delete-transaksi" style="width: 36px; height: 36px;">
+                                                                    <i class="fas fa-trash %>"></i>
+                                                                </button>
+                                                            <% } %>
+                                                        </td>
+                                                    </tr>
+                                                <% } %>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Total Terbayar</th>
+                                                    <th class="text-right"><%= total.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th>Sisa</th>
+                                                    <th class="text-right <%= (spk[0].spk_nilai - total) != 0 ? 'text-danger' : '' %>"><%= (spk[0].spk_nilai - total).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></th>
+                                                    <th>
+                                                        <button id="tambah-spk" class="btn btn-sm btn-danger">TAMBAH</button>
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <% } else { %>
+                                    <div class="d-flex justify-content-center py-2 font-weight-bold">
+                                        TIDAK ADA DATA
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+
+                    $(document).on('click', '.detail-transaksi', async function() {
+                        const id = $(this).attr('id')
+                        const level = $(this).attr('data-my-level')
+                        if (level == 'cost controll' || level == 'director' || level == 'admin') {
+                            await postData('/spk_control/check_spk_detail', {id})
+                            .then ( e => {
+                                if (e.status == 'success') {
+                                    if (e.data.spk_verifikasi == 0) {
+                                        const project = urlParams.get('project')
+                                        const form = `<div class="row mb-4">
+                                            <div class="col-sm-6">
+                                                <label>SPK Nomor</label>
+                                                <div class="form-control">${e.data.spk_nomor}</div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="mandor">Mandor</label>
+                                                <div class="form-control">${e.data.mandor}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-sm-6">
+                                                <label>Nilai SPK</label>
+                                                <div class="form-control">${e.data.spk_nilai.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})}</div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="nilai-pembayaran" class="text-primary">Nilai Pembayaran</label>
+                                                <input id="nilai-pembayaran" type="number" class="form-control" value="${e.data.spk_progress}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-sm-6">
+                                                <label for="jenis-pekerjaan">Jenis Pekerjaan</label>
+                                                <div class="form-control mb-4">${e.data.spk_jenis_pekerjaan}</div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="tanggal-pembayaran" class="text-primary">Tanggal Pembayaran</label>
+                                                <input id="tanggal-pembayaran" type="date" class="form-control" value="${e.data.spk_tanggal_bayar ? e.data.spk_tanggal_bayar.split("T")[0] : ''}">
+                                            </div>
+                                        </div>
+                                        <label for="catatan" class="text-primary">Catatan</label>
+                                        <textarea class="form-control mb-4" id="catatan">${e.data.spk_catatan ? e.data.spk_catatan : ''}</textarea>`
+                                        swal.fire({
+                                            width: 800,
+                                            title: `Tambah SPK PROJECT<br>${project}`,
+                                            html: form,
+                                            confirmButtonText: 'SUBMIT',
+                                            showCancelButton: true,
+                                            allowOutsideClick: false,
+                                            preConfirm: () => {
+                                                const pembayaran = document.getElementById('nilai-pembayaran')
+                                                const catatan = document.getElementById('catatan')
+                                                const tanggalBayar = document.getElementById('tanggal-pembayaran')
+                                                if (!pembayaran.value) {
+                                                    pembayaran.focus()
+                                                    return swal.showValidationMessage('Nilai Pembayaran')
+                                                }
+                                                if (!catatan.value) {
+                                                    catatan.focus()
+                                                    return swal.showValidationMessage('Catatan Wajib diisi')
+                                                }
+                                                return {id, pembayaran: pembayaran.value, catatan: catatan.value, tanggalBayar: tanggalBayar.value}
+                                            }
+                                        })
+                                        .then ( e => {
+                                            if (e.isConfirmed) {
+                                                postData('/spk_control/check_spk_detail/update', e.value)
+                                                .then (e => {
+                                                    if (e.status == 'success') {
+                                                        location.reload()
+                                                    } else {
+                                                        toastFailed(e.message)
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    } else {
+                                        swal.fire({icon: 'error', title: 'Data sudah dikunci PAYMENT', showConfirmButton: false})
+                                    }
+                                } else {
+                                    toastFailed(e.message)
+                                }
+                            })
+                        } else if (level == 'payment') {
+                            swal.fire({
+                                icon: 'warning',
+                                title: 'Ubah Status Terbayar',
+                                html: `<div id="icon-ver"></div>`,
+                                showConfirmButton: false,
+                                showCancelButton: true
+                            })
+                            await postData('/spk_control/check_spk_detail', {id})
+                            .then( res => {
+                                if (res.data.spk_verifikasi == 0) {
+                                    var iconVer = `<i data-ver="${res.data.spk_verifikasi }" class="fas fa-toggle-off fa-3x verification"></i>`
+                                } else {
+                                    var iconVer = `<i data-ver="${res.data.spk_verifikasi }" class="fas fa-toggle-on fa-3x text-success verification"></i>`
+                                }
+                                document.querySelector('#icon-ver').innerHTML = iconVer
+                            })
+                            $(document).on('click', '.verification', function() {
+                                const verValue = $(this).attr('data-ver')
+                                putData('/spk_control/check_spk_detail/update_verifikasi', {id, verValue: verValue == 0 ? 1 : 0})
+                                .then ( res => {
+                                    if (res.status == 'success') {
+                                        if (verValue == 0) {
+                                            $(this).attr('data-ver', 1)
+                                            $(this).addClass('fa-toggle-on text-success')
+                                            $(this).removeClass('fa-toggle-off')
+                                            $('#'+id).removeClass('btn-primary')
+                                            $('#'+id).addClass('btn-success')
+                                            $('#'+id).html('<i class="fas fa-toggle-on"></i>')
+                                        } else {
+                                            $(this).attr('data-ver', 0)
+                                            $(this).addClass('fa-toggle-off')
+                                            $(this).removeClass('fa-toggle-on text-success')
+                                            $('#'+id).removeClass('btn-success')
+                                            $('#'+id).addClass('btn-primary')
+                                            $('#'+id).html('<i class="fas fa-toggle-off"></i>')
+                                        }
+                                        toastWarning(res.message)
+                                    } else {
+                                        toastFailed(res.message)
+                                    }
+                                })
+                            })
+                        }
+                    })
+
+                    $(document).on('click', '.delete-transaksi', function() {
+                        const id = $(this).attr('data-id')
+                        const level = $(this).attr('data-my-level')
+                        if (level == "cost controll" || level == "payment" || level == "director" || level == "admin") {
+                            swal.fire({
+                                icon: 'warning',
+                                title: 'Hapus Data Ini!?',
+                                html: 'Jika dihapus maka tidak dapat dikembalikan, anda harus meng input data baru lagi.',
+                                showConfirmButton: true,
+                                showCancelButton: true,
+                                allowOutsideClick: false
+                            })
+                                .then ((e) => {
+                                    if (e.isConfirmed) {
+                                        swal.fire({title: "DELETING"})
+                                        swal.showLoading()
+                                        deleteData('/spk_control/check_spk_detail/update_spk_nilai', {id})
+                                            .then((res) => {
+                                                if (res.status == 'success') {
+                                                    toastWarning(res.message)
+                                                    setTimeout(() => {
+                                                        location.reload()
+                                                    }, 1000)
+                                                } else {
+                                                    testFailed(res.message)
+                                                }
+                                            })
+                                    }
+                                })
+                        }
+                        console.log({id, level})
+                    })
+                    $(document).on('click', '#tambah-spk', async function() {
+                        const project = urlParams.get('project')
+                        const spkNomor = urlParams.get('nomor_spk')
+                        const form = `<label for="nilai-pembayaran">Nilai Pembayaran</label>
+                                <input id="nilai-pembayaran" type="number" class="form-control">
+                            <label for="tanggal-bayar">Tanggal Bayar</label>
+                            <input class="form-control" id="tanggal-bayar" type="date">
+                            <label for="catatan">Catatan</label>
+                            <textarea class="form-control" id="catatan"></textarea>`
+                        swal.fire({
+                            title: `Tambah SPK PROJECT<br>${project}`,
+                            html: form,
+                            confirmButtonText: 'SUBMIT',
+                            showCancelButton: true,
+                            preConfirm: () => {
+                                const pembayaran = document.getElementById('nilai-pembayaran')
+                                const tanggalBayar = document.getElementById('tanggal-bayar')
+                                const catatan = document.getElementById('catatan')
+                                if (!pembayaran.value) {
+                                    pembayaran.focus()
+                                    return swal.showValidationMessage('Nilai Pembayaran')
+                                }
+                                if (!tanggalBayar.value) {
+                                    tanggalBayar.focus()
+                                    return swal.showValidationMessage('Tanggal Pembayaran')
+                                }
+                                if (!catatan.value) {
+                                    catatan.focus()
+                                    return swal.showValidationMessage('Catatan Wajib diisi')
+                                }
+                                return {project, spkNomor, pembayaran: pembayaran.value, tanggalBayar: tanggalBayar.value, catatan: catatan.value}
+                            }
+                        })
+                        .then ( e => {
+                            if (e.isConfirmed) {
+                                // return console.log(e.value)
+                                postData('/spk_control/check_spk_detail/tambah_transansi', e.value)
+                                .then ( response => {
+                                    if (response.status == 'success') {
+                                        location.reload()
+                                    } else {
+                                        toastFailed(response.message)
+                                    }
+                                })
+                            }
+                        })
+                    })
+
+                    $(document).on('click', '#ubah-nilai-spk', function() {
+                        const spkNo = $(this).attr('data-no-spk')
+                        const nilai = $(this).attr('data-nilai-spk')
+                        const jenisPek = $(this).attr('data-jenis-pekerjaan')
+                        swal.fire({
+                            icon: "warning",
+                            title: "UBAH NILAI SPK",
+                            html: `SPK NO: ${spkNo}
+                            <input id="newVal" type="number" class="form-control" value="${nilai}">
+                            <input id="jenisPek" type="text" class="form-control" value="${jenisPek}">`,
+                            showCancelButton: true,
+                            confirmButtonText: "SUBMIT",
+                            preConfirm: () => {
+                                const newVal = $("#newVal").val()
+                                const newJenis = $("#jenisPek").val()
+                                // if (nilai == newVal) {
+                                //     setTimeout(() => swal.close(), 1000);
+                                //     return swal.showValidationMessage("Nilai sama. Tidak ada perubahan");
+                                // }
+                                return {newVal, newJenis};
+                            }
+                        })
+                            .then((e) => {
+                                if (e.isConfirmed) {
+                                    swal.fire({title:"Processing", allowOutsideClick: false});
+                                    swal.showLoading();
+                                    putData("/spk_control/check_spk_detail/update_spk_nilai", {spkNo, newVal: e.value.newVal, newJenis: e.value.newJenis})
+                                        .then((resp) => {
+                                            swal.close();
+                                            if (resp.status == "success") {
+                                                setTimeout(() => location.reload(), 1000);
+                                                return toastSuccess(resp.message);
+                                            }
+                                            toastFailed(resp.message);
+                                        })
+                                }
+                            })
+                    })
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

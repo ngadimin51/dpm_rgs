@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div>
+                                            <form id="form-search">
+                                                <div class="input-group">
+                                                    <input type="text" name="name" class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <div>
+                                            <button id="add-record-button" data-toggle="modal" data-target="#add-record" class="btn btn-danger">ADD RECORD</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table id="table-assets" class="table table-sm table-hover table-striped">
+                                            <thead class="table-dark text-center">
+                                                <tr>
+                                                    <th class="align-middle">#</th>
+                                                    <th class="align-middle">ITEM</th>
+                                                    <th class="align-middle">QTY</th>
+                                                    <th class="align-middle">QTY OUT</th>
+                                                    <th class="align-middle">MENU</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbody">
+                                                <% for (let i = 0; i < assets.length; i++) { %>
+                                                    <%
+                                                        const x = assets[i].detail
+                                                        let qty = 0
+                                                        let qty_out = 0
+                                                        for (let i = 0; i < x.length; i++) {
+                                                            qty += x[i].asset_qty
+                                                            qty_out += x[i].asset_qty_out
+                                                        }
+                                                    %>
+                                                    <tr id="<%= assets[i].asset_id %>" nama="<%= assets[i].asset_name %>">
+                                                        <td><%= i+1 %></td>
+                                                        <td id="<%= assets[i].asset_id %>-nama"><%= assets[i].asset_name %></td>
+                                                        <td id="<%= assets[i].asset_id %>-qty" class="text-center"><%= qty %></td>
+                                                        <td id="<%= assets[i].asset_id %>-qty-out" class="text-center"><%= qty_out %></td>
+                                                        <td class="text-center">
+                                                            <button class="btn btn-sm btn-warning update-assets" data-id="<%= assets[i].asset_id %>">
+                                                                <i class="pe-7s-menu"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div>
+                                        <button id="load-more" class="btn font-weight-bold">Load More Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+
+                    $('#load-more').click( function() {
+                        const table = document.getElementById("tbody");
+                        const count = table.rows.length
+                        const id = table.rows[count - 1].getAttribute('id')
+                        const nama = table.rows[count - 1].getAttribute('nama')
+                        postData('/items_control/assets_control/loadMore', {id, nama})
+                        .then ( e => {
+                            if (e.length > 0) {
+                                let tr = ''
+                                for (let i = 0; i < e.length; i++) {
+                                    const x = e[i].detail
+                                    let qty = 0
+                                    let qty_out = 0
+                                    for (let i = 0; i < x.length; i++) {
+                                        qty += x[i].asset_qty
+                                        qty_out += x[i].asset_qty_out
+                                    }
+                                    var number = table.rows.length
+
+                                    var row = table.insertRow(number);
+                                    row.setAttribute('id', e[i].asset_id)
+                                    row.setAttribute('nama', e[i].asset_name)
+                                    var cell1 = row.insertCell(0)
+                                    var cell2 = row.insertCell(1)
+                                    var cell3 = row.insertCell(2)
+                                    var cell4 = row.insertCell(3)
+                                    var cell5 = row.insertCell(4)
+                                    cell1.innerHTML = number + 1
+                                    cell2.setAttribute('id', e[i].asset_id+'-nama')
+                                    cell2.innerHTML = e[i].asset_name
+                                    cell3.setAttribute('id', e[i].asset_id+'-qty')
+                                    cell3.classList.add('text-center')
+                                    cell3.innerHTML = qty
+                                    cell4.setAttribute('id', e[i].asset_id+'-qty-out')
+                                    cell4.classList.add('text-center')
+                                    cell4.innerHTML = qty_out
+                                    cell5.classList.add('text-center')
+                                    cell5.innerHTML = `<td class="text-center">
+                                        <button class="btn btn-sm btn-danger update-assets" data-id="${e[i].asset_id}">
+                                            <i class="pe-7s-menu"></i>
+                                        </button>
+                                    </td>`
+                                }
+                            }
+                        })
+                    })
+
+                    $(document).on('click','#add-record-button', function() {
+                        const choices = new Choices('#nama');
+                    })
+
+                    $(document).on('click', '#buat-baru', function() {
+                        document.getElementById('input-nama').innerHTML = `<input class="form-control my-1 mr-sm-2" id="nama">`
+                    })
+
+                    $(document).on('click', '#save-assets', function() {
+                        const namex = document.getElementById('nama').value.trim()
+                        const type = document.getElementById('type-transaksi').value
+                        const qtyx = document.getElementById('qty').value
+                        const kondisix = document.getElementById('kondisi').value.trim()
+                        const keteranganx = document.getElementById('keterangan').value.trim()
+
+                        if (namex && type && qtyx && kondisix && keteranganx) {
+                            postData('/API/insertRecord', {namex, type, qtyx, kondisix, keteranganx})
+                            .then ( e => {
+                                if (e.status == 'success') {
+                                    location.href = '/items_control/update_asset?name='+namex
+                                } else {
+                                    toastFailed(e.message)
+                                    closeModal('add-record')
+                                }
+                            })
+                        } else {
+                            toastWarning('check kelengkapan form')
+                        }
+                    })
+                    
+                    $(document).on('click', '.update-assets', function () {
+                        const id = $(this).attr("data-id");
+                        const nama = $('#'+id+'-nama').html();
+                        postData('/items_control/assets_control_detail', {name: nama})
+                        .then( e => {
+                            let table = `<div class="container">
+                                <a href="/items_control/update_asset?name=${nama}" class="btn btn-success float-right mb-2">UPDATE</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="detail-assets" class="table table-sm table-hover table-striped">
+                                <thead class="table-dark text-center">
+                                    <tr>
+                                        <th class="align-middle">#</th>
+                                        <th class="align-middle">ITEM</th>
+                                        <th class="align-middle">QTY</th>
+                                        <th class="align-middle">QTY OUT</th>
+                                        <th class="align-middle">KONDISI</th>
+                                        <th class="align-middle">KETERANGAN</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">`
+                                let dataIn = 0
+                                let dataOut = 0
+                                for (let i = 0; i < e.length; i++) {
+                                    dataIn += e[i].asset_qty
+                                    dataOut += e[i].asset_qty_out
+                                    table += `<tr id="${e[i].asset_id}">
+                                        <td>${i + 1}</td>
+                                        <td id="${e[i].asset_id}-nama">${e[i].asset_name}</td>
+                                        <td id="${e[i].asset_id}-qty" class="text-center">${e[i].asset_qty}</td>
+                                        <td id="${e[i].asset_id}-qty-out" class="text-center">${e[i].asset_qty_out}</td>
+                                        <td id="${e[i].asset_id}-kondisi">${e[i].asset_kondisi}</td>
+                                        <td id="${e[i].asset_id}-keterangan">${e[i].asset_keterangan}</td>
+                                    </tr>`
+                                }
+                                table += `</tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>${dataIn}</th>
+                                        <th>${dataOut}</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot></table>
+                            </div>`
+                            swal.fire({
+                                width: '800',
+                                html: table,
+                                showConfirmButton: false,
+                                showCloseButton: true
+                            })
+                        })
+                    })
+
+                    const formSearch = document.getElementById('form-search')
+                    formSearch.addEventListener('submit', (e) => {
+                        e.preventDefault()
+                        const name = document.getElementsByName('name')[0]
+                        if (name.value) {
+                            postData('/items_control/assets_control_pencarian', {name: name.value})
+                            .then(e => {
+                                let tr = ''
+                                for (let i = 0; i < e.length; i++) {
+                                    const x = e[i].detail
+                                    let qty = 0
+                                    let qty_out = 0
+                                    for (let i = 0; i < x.length; i++) {
+                                        qty += x[i].asset_qty
+                                        qty_out += x[i].asset_qty_out
+                                    }
+                                    tr += `<tr id="${e[i].asset_id}">
+                                        <td>${i + 1}</td>
+                                        <td id="${e[i].asset_id}-nama">${e[i].asset_name}</td>
+                                        <td id="${e[i].asset_id}-qty" class="text-center">${qty}</td>
+                                        <td id="${e[i].asset_id}-qty-out" class="text-center">${qty_out}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-danger update-assets" data-id="${e[i].asset_id}">
+                                                <i class="pe-7s-menu"></i>
+                                            </button>
+                                        </td>
+                                    </tr>`
+                                }
+                                document.getElementById('tbody').innerHTML = tr
+                            })
+                        }
+                    })
+
+                    /*
+                    window.onscroll = () => {
+                        checkScroll()
+                    }, false;
+
+                    function checkScroll() {
+                        var lastScrollTop = 0;
+                        var st = window.pageYOffset || document.documentElement.scrollTop
+                        if (st > lastScrollTop){
+                            scrollFunction()
+                            console.log('down')
+                        } else {
+                            console.log('up')
+                        }
+                        lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+                    }
+
+                    element.addEventListener("scroll", function(){ // or window.addEventListener("scroll"....
+                    var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
+                    if (st > lastScrollTop){
+                        // downscroll code
+                    } else {
+                        // upscroll code
+                    }
+                    lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+                    }, false);
+
+                    function scrollFunction() {
+                        const selisih = document.body.scrollHeight - document.documentElement.scrollTop
+                        const id = '<%= assets[assets.length - 1].asset_id %>'
+                        if (selisih < 1000) {
+                            disableScroll()
+                            swal.fire({icon: 'warning', title: 'Loading More Data'})
+                            Swal.showLoading()
+                            postData('/items_control/assets_control/loadMore', {id})
+                            .then ( e => {
+                                setTimeout(() => {
+                                    console.log(e)
+                                    swal.close()
+                                    enableScroll()
+                                }, 5000)
+                            })
+                        }
+                    }
+
+                    function disableScroll() {
+                        // Get the current page scroll position
+                        scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                        scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+
+                        window.onscroll = function() {
+                            window.scrollTo(scrollLeft, scrollTop);
+                        };
+                    }
+
+                    function enableScroll() {
+                        window.onscroll = () => {
+                            checkScroll()
+                        };
+                    }
+                    */
+                    
+                </script>
+
+            </div>
+        </div>
+
+        <div id="add-record" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <button class="btn btn-danger">
+                                Add Record <span id="buat-baru" class="badge badge-warning">Buat Baru</span>
+                            </button>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label class="my-1 mr-2" for="nama">Nama (Jika nama tidak ada klik buat baru)</label>
+                        <div id="input-nama">
+                            <select class="form-control" id="nama">
+                                <% for (let i = 0; i < allName.length; i++) { %>
+                                    <option value="<%= allName[i].asset_name %>"><%= allName[i].asset_name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <label class="my-1 mr-2" for="in">Transaksi Ib/Out</label>
+                        <select class="form-control" id="type-transaksi">
+                            <option value=""> - </option>
+                            <option value="in"> In </option>
+                            <option value="out"> Out </option>
+                        </select>
+                        <label class="my-1 mr-2" for="in">Qty</label>
+                        <input class="form-control my-1 mr-sm-2" id="qty">
+                        <label class="my-1 mr-2" for="kondisi">Kondisi</label>
+                        <input class="form-control my-1 mr-sm-2" id="kondisi">
+                        <label class="my-1 mr-2" for="keterangan">Keterangan</label>
+                        <input class="form-control my-1 mr-sm-2" id="keterangan">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="save-assets" type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+                    
+                    <div class="row">
+                        <div class="col-md-12 col-xl-12">
+                            <div class="card mb-3">
+                                <div class="widget-content-outer px-2 py-2">
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label class="font-weight-bold">PO Number</label>
+                                            <input name="po-number" type="text" class="form-control">
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target=".bd-example-modal-xl">
+                                                Daftar Item <span class="badge badge-light"><%= dpm.length %></span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+
+                                    <table class="table table-sm table-hover table-striped">
+                                        <thead class="table-dark text-center">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Item</th>
+                                                <th>Note</th>
+                                                <th>Qty</th>
+                                                <th>Unit</th>
+                                                <th>Price</th>
+                                                <th>Sub Total</th>
+                                                <th>Po Anak</th>
+                                                <th>Menu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="data-item-po">
+                                        </tbody>
+                                        <tfoot id="data-item-po-footer"></tfoot>
+                                    </table>
+
+                                    <table class="table table-sm table-hover table-striped">
+                                        <tbody>
+
+                                            <tr>
+                                                <td class="align-top">1. Cara Pembayaran</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input type="text" name="payment" class="form-control" value="Tempo 2 minggu"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">2. Jadwal Pengiriman</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input type="text" name="jadwal" class="form-control" value="Segera setelah PO dikirim"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">3. Alamat Pengiriman</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input name="alamat-pengiriman" type="text" class="form-control"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">4. Penerima Material Proyek</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input name="penerima" type="text" class="form-control"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">5. Syarat Penagihan Harus Melapirkan</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top">
+                                                    <textarea name="syarat" id="syarat" rows="5" class="form-control"></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">6. Catatan</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input name="catatan" type="text" class="form-control"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">7. Pelunasan</td>
+                                                <td class="align-top">:</td>
+                                                <td id="pelunasan" class="align-top">-</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-sm table-hover table-striped">
+                                        <tbody class="text-center">
+                                            <tr style="height: 200px;">
+                                                <td class="align-top" style="min-width: 25vw;">
+                                                    Jakarta, <input name="tanggal" type="date" class="">
+                                                    <br>
+                                                    Hormat kami,
+                                                </td>
+                                                <td class="align-top" style="min-width: 25vw"></td>
+                                                <td class="align-top" style="min-width: 25vw;">Disetujui oleh</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-weight-bold"><u>Ir. Yuris Armanto</u></span>
+                                                    <!-- <br>
+                                                    <i>DIrektur Utama</i> -->
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <select name="supplier" id="supplier" class="form-control">
+                                                        <option value=""></option>
+                                                        <% for (let i = 0; i < supplier.length; i++) { %>
+                                                            <option value="<%= supplier[i].id %>"><%= supplier[i].name %></option>
+                                                        <% } %>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="row">
+                                        <div class="container" id="submit-po"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <%- include('../partial/footer') %>
+            </div>
+
+        </div>
+    </div>
+    
+    <!-- Extra large modal -->
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Daftar Item Untuk PO</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <% if(dpm.length > 0) { %>
+                        <div class="table-responsive">
+                            <table id="table-po-item" class="table table-sm table-hover table-striped">
+                                <thead class="text-center align-top table-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Item</th>
+                                        <th>Lapangan</th>
+                                        <th>Note</th>
+                                        <th>Qty</th>
+                                        <th>Unit</th>
+                                        <th>Price</th>
+                                        <th>Menu</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (let i = 0; i < dpm.length; i++) { %>
+                                        <% if(dpm[i].dir_acc == dpm[i].supl1) {
+                                            var supl = dpm[i].supl1
+                                            var payment = dpm[i].payment1
+                                            var note = dpm[i].note1
+                                            var price = dpm[i].price1
+                                        } else if (dpm[i].dir_acc == dpm[i].supl2) {
+                                            var supl = dpm[i].supl2
+                                            var payment = dpm[i].payment2
+                                            var note = dpm[i].note2
+                                            var price = dpm[i].price2
+                                        } else if (dpm[i].dir_acc == dpm[i].supl3) {
+                                            var supl = dpm[i].supl3
+                                            var payment = dpm[i].payment3
+                                            var note = dpm[i].note3
+                                            var price = dpm[i].price3
+                                        } %>
+                                        <tr>
+                                            <td class="align-top"><%= i + 1%></td>
+                                            <td class="align-top" style="min-width: 200px;">
+                                                <%= dpm[i].item %>
+                                                <br>
+                                                <small class="font-weight-bold"><%= dpm[i].supplierName %></small>
+                                                <br>
+                                                <a href="/dpm_control?number=<%= dpm[i].number%>&id=<%= dpm[i].dpm_id%>" target="_blank">Check Detail</a>
+                                                <!-- <pre>
+                                                    <%= JSON.stringify(dpm[i], undefined, 2)%>
+                                                </pre> -->
+                                            </td>
+                                            <td class="align-top" style="min-width: 200px;">
+                                                <%= dpm[i].catatan %>
+                                            </td>
+                                            <td class="align-top text-right" style="min-width: 200px;">
+                                                <textarea id="note-<%= dpm[i].dpm_id %>" rows="<%= Math.floor(note.length / 12) %>" class="form-control"><%= note %></textarea>
+                                            </td>
+                                            <td class="align-top text-right">
+                                                <input id="qty-<%= dpm[i].dpm_id %>" type="text" class="form-control" value="<%= dpm[i].qty3 %>">
+                                            </td>
+                                            <td class="align-top"><%= dpm[i].unit %></td>
+                                            <td class="align-top text-right">
+                                                <input id="price-<%= dpm[i].dpm_id %>" type="text" class="form-control" value="<%= price %>">
+                                            </td>
+                                            <td class="align-top text-center">
+                                                <button
+                                                data-id="<%= dpm[i].dpm_id %>"
+                                                data-item="<%= dpm[i].item %>"
+                                                data-unit="<%= dpm[i].unit %>"
+                                                data-project="<%= dpm[i].project %>"
+                                                data-supplier="<%= dpm[i].supplierName %>"
+                                                class="btn btn-sm btn-primary save-item">
+                                                    <i class="pe-7s-check"></i>
+                                                </button>
+                                                <button
+                                                data-id="<%= dpm[i].dpm_id %>"
+                                                data-item="<%= dpm[i].item %>"
+                                                data-unit="<%= dpm[i].unit %>"
+                                                data-project="<%= dpm[i].project %>"
+                                                class="btn btn-sm btn-danger delete-item">
+                                                    <i class="pe-7s-close"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center font-weight-bold">
+                            Tidak ada item untuk PO
+                        </div>
+                    <% } %>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Send message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/scripts/submit-po.js"></script>
+    <script>
+        const deleteItem = document.querySelectorAll('.delete-item')
+        $(document).on('click', '.delete-item', function() {
+            const dpmId = this.getAttribute('data-id')
+            const item = this.getAttribute('data-item')
+            const unit = this.getAttribute('data-unit')
+            const project = this.getAttribute('data-project')
+            console.log({status: 'collecting', dpmId, item, unit, project})
+            swal.fire({
+                icon: 'error',
+                title: 'HAPUS ITEM',
+                html: 'Perhatian, tindakan ini akan menghapus item pada table DPM dan table Apple2Apple. Tindakan ini TIDAK DAPAT DIKEMBALIKAN',
+            }).then( async e => {
+                if (e.isConfirmed) {
+                    console.log({status: 'posting', dpmId, item, unit, project})
+                    const result = await deleteData('/dpm/delete', {dpmId, item, unit, project})
+                    console.log(result)
+                    if (result.status === 'success') {
+                        location.reload()
+                    } else {
+                        swal.fire({
+                            icon: 'error',
+                            html: result.message
+                        })
+                    }
+                }
+            })
+        })
+    </script>
+
+</body>
+</html>

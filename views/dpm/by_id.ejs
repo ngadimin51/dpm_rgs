@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            <li class="breadcrumb-item">
+                                                <a href="/dpm_control?project=<%= dpm.project %>">
+                                                    <%= dpm.project %>
+                                                </a>
+                                            </li>
+                                            <li class="breadcrumb-item">
+                                                <a href="/dpm_control?number=<%= dpm.number %>"><%= dpm.number %></a>
+                                            </li>
+                                            <li class="breadcrumb-item active" aria-current="page">
+                                                <%= dpm.dpm_id %>
+                                            </li>
+                                        </ol>
+                                    </nav>
+                                    <a href="/dpm_control/pelacakan?number=<%= dpm.number %>&dpm_id=<%= dpm.dpm_id %>" class="btn btn-sm btn-primary">Pelacakan</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- LAPANGAN -->
+                        <div class="col-md-6 align-items-stretch">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <div class="border border-primary rounded py-1 px-2 rounded mb-2"><b><%= dpm.name %></b></div>
+                                        <div class="border border-primary rounded py-1 px-2 rounded mb-2"><b>ID ITEM: <a href="/items?id=<%= dpm.item %>"><%= dpm.item %></a></b></div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Dibuat</th>
+                                                    <th>SM Process</th>
+                                                    <th>PM Process</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <%= dpm.created ? new Date(dpm.created).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '-' %>
+                                                        <br>
+                                                        <%= dpm.created ? new Date(dpm.created).toLocaleTimeString('en-US') : '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= dpm.sm_modify ? new Date(dpm.sm_modify).toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) : '-' %>
+                                                        <br>
+                                                        <%= dpm.sm_modify ? new Date(dpm.sm_modify).toLocaleTimeString('en-US') : '-' %>
+                                                    </td>
+                                                    <td>
+                                                        <%= dpm.pm_modify ? new Date(dpm.pm_modify).toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}) : '-' %>
+                                                        <br>
+                                                        <%= dpm.pm_modify ? new Date(dpm.pm_modify).toLocaleTimeString('en-US') : '-' %>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th class="align-top text-center" colspan="2">CATATAN</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        Catatan Pembuat
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <%= dpm.catatan ? '"'+dpm.catatan+'"' : '' %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        Catatan SM/PM
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <%= dpm.pm_comment ? '"'+dpm.pm_comment+'"' : 'null' %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        Catatan CC
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <%= dpm.comment ? '"'+dpm.comment+'"' : 'null' %>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <div class="d-flex justify-content-between">
+                                        <p class="w-50 px-1">
+                                            Pembuat :<br>
+                                            <b><%= pembuat.name ? pembuat.name : pembuat %></b><br>
+                                        </p>
+                                        <p class="w-50 px-1">
+                                            Cost Control :<br>
+                                            <b><%= locals.cc ? cc.name : 'null' %></b><br>
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- HO -->
+                        <div class="col-md-6 align-items-stretch">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th class="align-top text-center" colspan="2">Tanggal Kebutuhan Item</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        Permintaan Lapangan
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <%= dpm.date1 ? new Date(dpm.date1).toLocaleDateString('id-ID', {day: 'numeric', weekday: 'long', month: 'long', year: 'numeric'}) : '-' %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        Approval HO
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <%= dpm.date2 ? new Date(dpm.date2).toLocaleDateString('id-ID', {day: 'numeric', weekday: 'long', month: 'long', year: 'numeric'}) : '-' %>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th class="align-top text-center">Quantity Control</th>
+                                                    <th class="align-top text-center">Jumlah</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        QTY1 (Permintaan)
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <%= dpm.qty1+' '+dpm.unit %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        QTY2 (CC Approve)
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <%= dpm.qty2+' '+dpm.unit %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        QTY3 (BOD Approve)
+                                                    </td>
+                                                    <td class="align-top text-right">
+                                                        <%= dpm.qty3+' '+dpm.unit %>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        Qty Total (Total by PO)
+                                                    </td>
+                                                    <td id="total-item-po" class="align-top text-right">
+                                                        <script>
+                                                            fetch('/API/dpmPoApprove?project=<%= dpm.project %>&item=<%= dpm.item %>')
+                                                            .then( response => response.json())
+                                                            .then ( e => {
+                                                                document.getElementById('total-item-po').innerHTML = e.qty+' <%= dpm.unit %>'
+                                                            })
+                                                        </script>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped table-hover text-center">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th class="w-50">LAPANGAN</th>
+                                                    <th>HO</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <% if (dpm.control == 1) {
+                                                        var control = 'SM REJECT'
+                                                    } else if(dpm.control == 2) {
+                                                        var control = 'SM APPROVE'
+                                                    } else if(dpm.control == 3) {
+                                                        var control = 'PM REJECT'
+                                                    } else if(dpm.control == 4) {
+                                                        var control = 'PM APPROVE'
+                                                    } else {
+                                                        var control = 'SE APPROVE'
+                                                    } %>
+                                                    <% if ((dpm.control < 4) && dpm.ho == 0) {
+                                                        var ho = 'Menunggu Lapangan'
+                                                    } else if (dpm.control == 4 && dpm.ho == 0) {
+                                                        var ho = 'Menunggu Cost Control'
+                                                    } else if (dpm.control == 4 && dpm.ho == 1) {
+                                                        var ho = 'CC Reject'
+                                                    } else if (dpm.control == 4 && dpm.ho == 2) {
+                                                        var ho = 'CC Approve Menunggu Apple2Apple'
+                                                    } else if (dpm.control == 4 && dpm.ho == 3) {
+                                                        var ho = 'Apple2Apple Process'
+                                                    } else if (dpm.control == 4 && dpm.ho == 4) {
+                                                        var ho = 'BOD Approve'
+                                                    } else if (dpm.control == 4 && dpm.ho == 5) {
+                                                        var ho = 'PO Terbit'
+                                                    } else if (dpm.control == 4 && dpm.ho == 6) {
+                                                        var ho = 'Item dalam proses pengiriman'
+                                                    } else if (dpm.control == 4 && dpm.ho == 7) {
+                                                        var ho = 'Item telah sampai di proyek'
+                                                    } else {
+                                                        var ho = 'ERROR'
+                                                    } %>
+                                                    <td id="process-lapangan" data-id="<%= dpm.dpm_id%>">
+                                                        <button class="btn btn-block font-weight-bold border-warning" style="height: 80px;"><%= control %></button>
+                                                    </td>
+                                                    <td id="process-ho" data-id="<%= dpm.dpm_id%>">
+                                                        <button class="btn btn-block font-weight-bold border-primary" style="height: 80px;"><%= ho %></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <% if (!locals.apple && (userLevel == 'purchasing' || userLevel == 'cost controll' || userLevel == 'director' || userLevel == 'logistic' || userLevel == 'admin') && dpm.ho == 2) { %>
+                                        <button id="tambah-apple" class="btn btn-sm btn-danger">Buat apple to apple</button>
+                                    <% } %>
+                                    <% if (userLevel == 'cost controll' || userLevel == 'director' || userLevel == 'admin') { %>
+                                        <button id="hapus-apple" data-id="<%= dpm.dpm_id %>" data-item="<%= dpm.name %>" data-unit="<%= dpm.unit %>" data-project="<%= dpm.project %>" class="btn btn-sm btn-danger">HAPUS</button>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <% if (locals.apple) { %>
+
+                            <!-- APPLE STATUS -->
+                            <div class="col-md-12 col-sm-12">
+                                <div class="mb-3 card">
+                                    <div class="card-body d-flex justify-content-between">
+                                        <% if (apple.dir_acc > 0) {
+                                            if (apple.status == 0) {
+                                                var status = 'Approve, item bisa digunakan untuk lebih dari 1 PO'
+                                            } else if (apple.status == 1) {
+                                                var status = 'Approve Cost Control, menunggu BOD'
+                                            } else if (apple.status == 3) {
+                                                var status = 'Approve, Menunggu Pembuatan PO'
+                                            } else if (apple.status == 4) {
+                                                var status = 'Approve, item hanya untu 1 PO'
+                                            } else {
+                                                var status = 'error'
+                                            }
+                                        } else {
+                                            if (apple.status == 10) {
+                                                var status = 'Menunggu Approve Cost Control'
+                                            } else if (apple.status == 0) {
+                                                var status = 'Revisi, menunggu update dari purchasing'
+                                            } else if (apple.status == 1) {
+                                                var status = 'Approve Cost Control, menunggu BOD'
+                                            } else {
+                                                var status = 'error'
+                                            }
+                                        } %>
+                                        <div>
+                                            <b>APPLE STATUS : <%= status %></b>
+                                        </div>
+                                        <div id="apple-id" data-apple-id="<%= apple.id %>" class="border border-primary rounded py-1 px-2 rounded"><b>APPLE ID: <%= apple.id%></b></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <% if (userLevel == 'cost controll' || userLevel == 'director' || userLevel == 'admin') {
+                                var classAppleBtn = 'approval-apple'
+                            } else if (userLevel == 'purchasing') {
+                                var classAppleBtn = 'rev-apple'
+                            } else {
+                                var classAppleBtn = ''
+                            } %>
+                            
+                            <!-- SUPPLIER 1 -->
+                            <div id="supl1" class="col-md-4 col-lg-4">
+                                <div class="mb-3 card" style="height: 320px; overflow-y: auto;">
+                                    <div class="card-header font-weight-bold">
+                                        <b>SUPPLIER 1</b>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <tbody class="align-top">
+                                                <tr>
+                                                    <td><%= locals.supl1Name ? supl1Name : 'null' %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><%= apple.payment1 %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><%= apple.note1 %></td>
+                                                </tr>
+                                                <tr>
+                                                    <% if (userLevel == 'cost controll' || userLevel == 'purchasing' || userLevel == 'po' || userLevel == 'logistic' || userLevel == 'director' || userLevel == 'admin' ) { %>
+                                                        <td>Satuan: <%= apple.price1.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                    <% } else { %>
+                                                        <td> * * * * *</td>
+                                                    <% } %>
+                                                </tr>
+                                                <tr>
+                                                    <% if (userLevel == 'cost controll' || userLevel == 'purchasing' || userLevel == 'po' || userLevel == 'logistic' || userLevel == 'director' || userLevel == 'admin' ) { %>
+                                                        <td><b>Total: <%= (apple.price1 * dpm.qty2).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></b></td>
+                                                    <% } else { %>
+                                                        <td> * * * * *</td>
+                                                    <% } %>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer justify-content-center">
+                                        <i id="check-supl1" class="<%= classAppleBtn %> btn-apple-chois <%= apple.supl1 == apple.dir_acc ? 'active' : '' %> pe-7s-check pe-3x" data-id="<%= apple.id %>" data-dpm-id="<%= apple.dpm_id %>" data-supl="<%= apple.supl1 %>" data-name="<%= locals.supl1Name ? supl1Name : 'null' %>"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SUPPLIER 2 -->
+                            <div id="supl2" class="col-md-4 col-lg-4">
+                                <div class="mb-3 card" style="height: 320px; overflow-y: auto; <%= typeof warnaSupplier != 'undefined' ? warnaSupplier : '' %>">
+                                    <div class="card-header font-weight-bold">
+                                        SUPPLIER 2
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <tbody class="align-top">
+                                                <tr>
+                                                    <td><%= locals.supl2Name ? supl2Name : 'null' %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><%= apple.payment2 %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><%= apple.note2 %></td>
+                                                </tr>
+                                                <tr>
+                                                    <% if (userLevel == 'cost controll' || userLevel == 'purchasing' || userLevel == 'po' || userLevel == 'logistic' || userLevel == 'director' || userLevel == 'admin' ) { %>
+                                                        <td>Satuan: <%= apple.price2.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                    <% } else { %>
+                                                        <td> * * * * *</td>
+                                                    <% } %>
+                                                </tr>
+                                                <tr>
+                                                    <% if (userLevel == 'cost controll' || userLevel == 'purchasing' || userLevel == 'po' || userLevel == 'logistic' || userLevel == 'director' || userLevel == 'admin' ) { %>
+                                                        <td><b>Total: <%= (apple.price2 * dpm.qty2).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></b></td>
+                                                    <% } else { %>
+                                                        <td> * * * * *</td>
+                                                    <% } %>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer justify-content-center">
+                                        <i id="check-supl2" class="<%= classAppleBtn %> btn-apple-chois <%= apple.supl2 == apple.dir_acc ? 'active' : '' %> pe-7s-check pe-3x" data-id="<%= apple.id %>"data-dpm-id="<%= apple.dpm_id %>" data-supl="<%= apple.supl2 %>" data-name="<%= locals.supl2Name ? supl2Name : 'null' %>"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SUPPLIER 3 -->
+                            <div id="supl3" class="col-md-4 col-lg-4">
+                                <div class="mb-3 card" style="height: 320px; overflow-y: auto; <%= typeof warnaSupplier != 'undefined' ? warnaSupplier : '' %>">
+                                    <div class="card-header font-weight-bold">
+                                        SUPPLIER 3
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <tbody class="align-top">
+                                                <tr>
+                                                    <td><%= locals.supl3Name ? supl3Name : 'null' %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><%= apple.payment3 %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><%= apple.note3 %></td>
+                                                </tr>
+                                                <tr>
+                                                    <% if (userLevel == 'cost controll' || userLevel == 'purchasing' || userLevel == 'po' || userLevel == 'logistic' || userLevel == 'director' || userLevel == 'admin' ) { %>
+                                                        <td>Satuan: <%= apple.price3.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                    <% } else { %>
+                                                        <td> * * * * *</td>
+                                                    <% } %>
+                                                </tr>
+                                                <tr>
+                                                    <% if (userLevel == 'cost controll' || userLevel == 'purchasing' || userLevel == 'po' || userLevel == 'logistic' || userLevel == 'director' || userLevel == 'admin' ) { %>
+                                                        <td><b>Total: <%= (apple.price3 * dpm.qty2).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></b></td>
+                                                    <% } else { %>
+                                                        <td> * * * * *</td>
+                                                    <% } %>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer justify-content-center">
+                                        <i id="check-supl3" class="<%= classAppleBtn %> btn-apple-chois <%= apple.supl3 == apple.dir_acc ? 'active' : '' %> pe-7s-check pe-3x" data-id="<%= apple.id %>"data-dpm-id="<%= apple.dpm_id %>" data-supl="<%= apple.supl3 %>" data-name="<%= locals.supl3Name ? supl3Name : 'null' %>"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PURCHASING COMMENT -->
+                            <div class="col-md-12 col-sm-12">
+                                <div class="mb-3 card">
+                                    <div id="purchasing-comment" class="card-body">
+                                        <b><%= typeof purName == 'undefined' ? '-' : purName.name %></b> :
+                                        <p>"<%= apple.pur_comment ? apple.pur_comment : '-' %>"</p>
+                                        <%= apple.tanggal_jam.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+                                        <br>
+                                        <%= apple.tanggal_jam.toLocaleTimeString('en-US') %>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DIR COMMENT -->
+                            <div class="col-md-12 col-sm-12">
+                                <div class="mb-3 card">
+                                    <div class="card-body">
+                                        <%- locals.dirName ? '<b>'+dirName.name+'</b>' : '<b>BOD</b>' %> : <%= apple.dir_comment ? apple.dir_comment : '-' %>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <% } else { %>
+                            <div id="supplier-for-apple" class="row col-md-12 col-lg-12 container-fluid"></div>
+                        <% } %>
+
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+                <script src="/assets/scripts/dpm.js"></script>
+                <script>
+                    const deleteItem = document.querySelector('#hapus-apple')
+                    deleteItem.addEventListener('click', () => {
+                        const dpmId = deleteItem.getAttribute('data-id')
+                        const item = deleteItem.getAttribute('data-item')
+                        const unit = deleteItem.getAttribute('data-unit')
+                        const project = deleteItem.getAttribute('data-project')
+                        swal.fire({
+                            icon: 'error',
+                            title: 'HAPUS ITEM',
+                            html: 'Perhatian, tindakan ini akan menghapus item pada table DPM dan table Apple2Apple. Tindakan ini TIDAK DAPAT DIKEMBALIKAN',
+                        }).then( async e => {
+                            if (e.isConfirmed) {
+                                const result = await deleteData('/dpm/delete', {dpmId, item, unit, project})
+                                if (result.status === 'success') {
+                                    location.reload()
+                                } else {
+                                    swal.fire({
+                                        icon: 'error',
+                                        html: result.message
+                                    })
+                                }
+                            }
+                        })
+                    })
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

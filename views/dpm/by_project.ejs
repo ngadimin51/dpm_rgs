@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                
+                                <div class="card-body table-responsive">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="align-top">Lapangan</td>
+                                                <td class="align-top px-2">:</td>
+                                                <td>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=0&ho=0" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-primary">PENGAJUAN</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=1&ho=0" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-danger">SM REJECT</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=2&ho=0" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-success">SM APPROVE</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=3&ho=0" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-danger">PM REJECT</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=0" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-success">PM APPROVE</button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="align-top">Ho</td>
+                                                <td class="align-top px-2">:</td>
+                                                <td>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=1" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-danger">CC REJECT</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=2" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-primary">CC APPROVE</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=3&apple=process" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-success">APPLE PENGAJUAN</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=4&apple=approve" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-warning">APPLE APPROVE</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=4" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-success">BOD APPROVE</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=5" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-info">PO PROCESS</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=6" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-secondary">PENGIRIMAN</button>
+                                                    </a>
+                                                    <a href="/dpm_control/filter?project=<%= project %>&lapangan=4&ho=7" style="text-decoration: none;">
+                                                        <button class="badge badge-pill badge-dark">SAMPAI</button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <% if (locals.searchPermit) { %>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <form class="custom-search" accept="/dpm_control">
+                                                    <input type="hidden" name="project" value="<%= project %>">
+                                                    <input type="text" name="item" class="form-control">
+                                                    <button>
+                                                        <i class="fas fa-search"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                    <hr>
+                                    <% if (dpm.length > 0) { %>
+                                    <table class="table table-sm table-striped table-hover" width="100%">
+                                        <thead class="text-center table-dark">
+                                            <tr>
+                                                <th class="align-middle">No</th>
+                                                <th class="align-middle">Item</th>
+                                                <th class="align-middle" colspan="4">QTY</th>
+                                                <th class="align-middle">Lapangan</th>
+                                                <th class="align-middle">HO</th>
+                                                <th class="align-middle">TINDAKAN</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="align-middle">1</th>
+                                                <th class="align-middle">2</th>
+                                                <th class="align-middle">3</th>
+                                                <th class="align-middle">4</th>
+                                                <th class="align-middle">5</th>
+                                                <th class="align-middle">6</th>
+                                                <th class="align-middle">7</th>
+                                                <th class="align-middle">8</th>
+                                                <th class="align-middle">9</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for (i = 0; i < dpm.length; i++) { %>
+                                                <% if (dpm[i].control == 1) {
+                                                    var control = 'SM REJECT'
+                                                } else if(dpm[i].control == 2) {
+                                                    var control = 'SM APPROVE'
+                                                } else if(dpm[i].control == 3) {
+                                                    var control = 'PM REJECT'
+                                                } else if(dpm[i].control == 4) {
+                                                    var control = 'PM APPROVE'
+                                                } else {
+                                                    var control = 'SE APPROVE'
+                                                } %>
+                                                <% if ((dpm[i].control < 4) && dpm[i].ho == 0) {
+                                                    var ho = 'Menunggu Lapangan'
+                                                } else if (dpm[i].control == 4 && dpm[i].ho == 0) {
+                                                    var ho = 'Menunggu Cost Control'
+                                                } else if (dpm[i].control == 4 && dpm[i].ho == 1) {
+                                                    var ho = 'CC Reject'
+                                                } else if (dpm[i].control == 4 && dpm[i].ho == 2) {
+                                                    var ho = 'CC Approve Menunggu Apple2Apple'
+                                                } else if (dpm[i].control == 4 && dpm[i].ho == 3) {
+                                                    var ho = 'Apple2Apple Process'
+                                                } else if (dpm[i].control == 4 && dpm[i].ho == 4) {
+                                                    var ho = 'BOD Approve'
+                                                } else if (dpm[i].control == 4 && dpm[i].ho == 5) {
+                                                    var ho = 'PO Terbit'
+                                                } else if (dpm[i].control == 4 && dpm[i].ho == 6) {
+                                                    var ho = 'Item dalam proses pengiriman'
+                                                } else if (dpm[i].control == 4 && dpm[i].ho == 7) {
+                                                    var ho = 'Item telah sampai di proyek'
+                                                } else {
+                                                    var ho = 'ERROR'
+                                                } %>
+                                                <tr>
+                                                    <td><%= i + 1 %></td>
+                                                    <td>
+                                                        <%= dpm[i].name %><br>
+                                                        <a href="/dpm_control?number=<%= dpm[i].number %>" class="font-weight-bold my-1"><%= dpm[i].number %></a>
+                                                    </td>
+                                                    <td><%= dpm[i].qty1 %></td>
+                                                    <td><%= dpm[i].qty2 %></td>
+                                                    <td><%= dpm[i].qty3 %></td>
+                                                    <td><%= dpm[i].unit %></td>
+                                                    <td>
+                                                        <div class="badge badge-pill badge-warning"><%= control %></div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="badge badge-pill badge-success"><%= ho %></div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="/dpm_control?number=<%= dpm[i].number %>&id=<%= dpm[i].dpm_id %>" class="badge badge-pillbtn-sm btn-primary">detail</a>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                    <% } else { %>
+                                        <div class="d-flex justify-content-center py-2 font-weight-bold">
+                                            TIDAK ADA DATA
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+                    $('.table').dataTable()
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

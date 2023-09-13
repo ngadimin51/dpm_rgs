@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+    <link rel="stylesheet" href="/assets/vendors/choices/choices.min.css">
+    <script src="/assets/vendors/choices/choices.min.js"></script>
+    
+    <script src="/assets/vendors/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/assets/vendors/data-Tables/jquery.dataTables.min.css">
+    <script src="/assets/vendors/data-Tables/jquery.dataTables.min.js"></script>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+
+                        <div class="mb-3 col-md-12 card">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="position-relative row form-group">
+                                            <label for="project" class="col-sm-3 col-form-label font-weight-bold">PROJECT</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <select name="project" id="project" class="form-control">
+                                                        <option value=""></option>
+                                                        <% for(let i = 0; i < project.length; i++) { %>
+                                                            <option value="<%= project[i].project %>"><%= project[i].project %></option>
+                                                        <% } %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="position-relative row form-group">
+                                            <label for="pekerjaan" class="col-sm-3 col-form-label font-weight-bold">PEKERJAAN</label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <select name="pekerjaan" id="pekerjaan" class="form-control">
+                                                        <option value=""></option>
+                                                        <% for(let i = 0; i < pekerjaan.length; i++) { %>
+                                                            <option value="<%= pekerjaan[i].pekerjaan %>"><%= pekerjaan[i].pekerjaan %></option>
+                                                        <% } %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="position-relative row form-group">
+                                            <label for="item" class="col-sm-3 col-form-label font-weight-bold">CARI ITEM</label>
+                                            <div class="col-sm-8">
+                                                <form id="form-item">
+                                                    <div class="input-group">
+                                                        <input type="text" name="item" class="form-control">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <button id="dpm-list" class="btn btn-primary">
+                                                DPM Tersimpan
+                                                <div id="dpm-cart" class="badge badge-light"></div>
+                                            </button>
+                                            <div id="dpm-destroy" class="ml-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="new-dpm" class="d-flex flex-wrap justify-content-between"></div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+                <script src="/assets/scripts/new-dpm.js"></script>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

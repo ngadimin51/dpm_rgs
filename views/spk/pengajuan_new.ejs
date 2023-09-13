@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+        <script src="/assets/vendors/ckeditor5/ckeditor.js"></script>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <form id="search-mandor">
+                                            <div class="input-group mb-3">
+                                                <input type="text" name="search" class="form-control" placeholder="Mandor name" aria-label="Mandor name" aria-describedby="btn-search">
+                                                <button class="btn btn-sm btn-warning" type="submit" id="btn-search">Input Data</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <hr />
+                                    <label for="">
+                                        SURAT PERINTAH KERJA
+                                        <input type="text" class="form-control">
+                                    </label>
+                                    <table>
+                                        <tr>
+                                            <td>Mandor</td>
+                                            <td>:</td>
+                                            <td id="mandorNama"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Alamat</td>
+                                            <td>:</td>
+                                            <td id="mandorAlamat"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hp</td>
+                                            <td>:</td>
+                                            <td id="mandorHp"></td>
+                                        </tr>
+                                    </table>
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Uraian</th>
+                                                <th>Volume</th>
+                                                <th>Harga Barang</th>
+                                                <th>Harga Upah</th>
+                                                <th>Jumlah</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="itemSpk"></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th class="text-right" colspan="5">Total</th>
+                                                <th id="jumlah"></th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-right" colspan="5">Discount</th>
+                                                <th>
+                                                    <input type="number" class="form-control" id="discount" step="any">
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-right" colspan="5">Grand Total</th>
+                                                <th id="grand-total"></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    <button id="toggleInputData" class="btn btn-sm btn-warning" type="button">Input Data</button>
+                                    <!-- <div class="input-data" style="display: none;"> -->
+                                    <div class="input-data">
+                                        <label>Uraian</label>
+                                        <div id="toolbar-container"></div>
+                                        <div id="editor" style="min-height: 20vh;">Type here ...</div>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <label>Volume</label>
+                                                <input type="text" class="form-control" name="volume" placeholder="10 m" step="any">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Harga Barang</label>
+                                                <input type="number" class="form-control" value="0" name="harga-barang" step="any">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Harga Upah</label>
+                                                <input type="number" class="form-control" value="0" name="harga-upah" step="any">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Simpan</label>
+                                                <button class="btn btn-block btn-primary" id="simpan-data">SIMPAN</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        Terbilang
+                                    </div>
+                                    <div class="row">
+                                        Keterangan :
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <%- include('../partial/footer') %>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+        let mandor = {}
+        let dataSpk = []
+        let jumlah = 0, grandTotal = 0
+
+        $(document).on('submit', '#search-mandor', function(e) {
+            e.preventDefault()
+            const search = $('input[name="search"]').val()
+            $.post({
+                url: '/rekanan/mandor/search',
+                data: {search, search},
+                success: function(data) {
+                    if (data.length > 0) {
+                        let mandorList = ''
+                        data.forEach( (x, i) => {
+                            mandorList += `<tr>
+                                <td>${i + 1}</td>
+                                <td>${x.mandor_nama}</td>
+                                <td>${x.mandor_alamat}</td>
+                                <td>
+                                    <button id="mandor-${x.mandor_id}" data-nama="${x.mandor_nama}" data-hp="${x.mandor_hp}" data-alamat="${x.mandor_alamat}" class="btn btn-sm btn-primary" onclick="simpanMandor(${x.mandor_id})">SAVE</button>
+                                </td>
+                            </tr>`
+                        });
+                        swal.fire({
+                            html: `<table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nama Mandor</th>
+                                        <th>Alamat</th>
+                                        <th>Pilih</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${mandorList}
+                                </tbody>
+                            <table>`,
+                            showConfirmButton: false,
+                            showCancelButton: true
+                        })
+                    }
+                    // console.log(data)
+                }
+            })
+        })
+
+        function simpanMandor(id) {
+            const data = document.getElementById('mandor-'+id)
+            const nama = data.getAttribute('data-nama')
+            const hp = data.getAttribute('data-hp')
+            const alamat = data.getAttribute('data-alamat')
+            mandor = {id, nama, hp, alamat}
+            swal.close()
+            $('#mandorNama').html(mandor.nama)
+            $('#mandorHp').html(mandor.hp)
+            $('#mandorAlamat').html(mandor.alamat)
+            // console.log(mandor)
+        }
+
+        $(document).on('click', '#toggleInputData', function() {
+            $('.input-data').toggle('show')
+        })
+
+        let editor;
+        if (typeof DecoupledEditor != 'undefined') {
+            DecoupledEditor
+                .create( document.querySelector( '#editor' ) )
+                .then( newEditor => {
+                    const toolbarContainer = document.querySelector( '#toolbar-container' );
+                    toolbarContainer.appendChild( newEditor.ui.view.toolbar.element );
+                    editor = newEditor
+                } )
+                .catch( error => {
+                    console.error( error );
+                } );
+        }
+
+        $(document).on('click', '#simpan-data', function() {
+            const uraian = editor.getData()
+            const volume = $('input[name="volume"]').val()
+            const hargaBarang = $('input[name="harga-barang"]').val()
+            const hargaUpah = $('input[name="harga-upah"]').val()
+            dataSpk.push({uraian, volume, hargaBarang, hargaUpah})
+            applyData()
+        })
+
+        $(document).on('keyup', '#discount', function(e) {
+            let disc = e.target.value > 0 ? e.target.value : 0
+            disc = disc / 100 * jumlah
+            // console.log(disc)
+            // console.log(grandTotal)
+            document.getElementById('grand-total').innerHTML = (grandTotal - disc).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})
+        })
+        function applyData() {
+            let html = ''
+            dataSpk.forEach( (x, i) => {
+                const subTotal = parseFloat(x.hargaBarang) + parseFloat(x.hargaUpah)
+                jumlah += parseFloat(subTotal)
+                html += `<tr>
+                    <td style="vertical-align: text-top">${i + 1}</td>
+                    <td style="vertical-align: text-top">${x.uraian}</td>
+                    <td style="vertical-align: text-top">${x.volume}</td>
+                    <td style="vertical-align: text-top">${parseFloat(x.hargaBarang).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})}</td>
+                    <td style="vertical-align: text-top">${parseFloat(x.hargaUpah).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})}</td>
+                    <td style="vertical-align: text-top">${subTotal.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})}</td>
+                </tr>`
+            })
+            grandTotal = jumlah
+            document.getElementById('itemSpk').innerHTML = html
+            document.getElementById('jumlah').innerHTML = jumlah.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})
+            document.getElementById('grand-total').innerHTML = jumlah.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'})
+        }
+    </script>
+
+</body>
+</html>

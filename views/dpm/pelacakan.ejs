@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+    <link rel="stylesheet" href="/assets/vendors/choices/choices.min.css">
+    <script src="/assets/vendors/choices/choices.min.js"></script>
+    
+    <script src="/assets/vendors/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/assets/vendors/data-Tables/jquery.dataTables.min.css">
+    <script src="/assets/vendors/data-Tables/jquery.dataTables.min.js"></script>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+
+                        <div class="mb-3 col-md-12 card">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Dpm Id</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><a href="/dpm_control?number=<%= pelacakan.number %>&id=<%= pelacakan.dpmId %>"><%= pelacakan.dpmId %></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Dpm Number</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><a href="/dpm_control?number=<%= pelacakan.number %>"><%= pelacakan.number %></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Item</td>
+                                                    <td class="px-3">:</td>
+                                                    <td>
+                                                        <a href="/items_control/check?item=<%= pelacakan.itemId %>" target="_blank"><%= pelacakan.item %></a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Dpm Id</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.dpmId %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Unit/satuan</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.unit %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pekerjaan</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.pekerjaan %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Project</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.project %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Apple Status</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.appleStatus %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Apple Supplier</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.appleSupplier %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PO Number</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><a href="/purchase_orders?project=<%= pelacakan.project %>&po_number=<%= pelacakan.poNumber %>"><%= pelacakan.poNumber %></a></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PO Supplier</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.poSupplier %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PO Status</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.poStatus %></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>QR Code</td>
+                                                    <td class="px-3">:</td>
+                                                    <td><%= pelacakan.qrCodePo %></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

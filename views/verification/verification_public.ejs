@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center w-100 h-100">
+        <div class="d-flex justify-content-center align-items-center rounded shadow" style="width: 95vw; height: 95vh; background-color: rgba(255,255,255,0.6);">
+            <div class="d-flex justify-content-center align-items-center rounded shadow" style="width: 92.5vw; height: 90vh; border: solid 4px rgba(0,0,0,0.5);">
+
+                <div class="text-center">
+
+                    <img src="/assets/images/icon_rgs.png" alt="PT. RGS" class="img-fluid mb-2 rounded-circle shadow" width="140">
+
+                    <% if (locals.ver) { %>
+                        <h3>PO NOMOR :</h3>
+                        <h3><b><%= ver.ver_number %></b></h3>
+                        <h5 class="mt-5"><%= ver.supplier %></h5>
+                        <p class="mt-5"><b>DATA INI TELAH TERVALIDASI</b><br><?= nl2br($validasi) ?></p>
+                        <img src="<?php echo base_url().'koleksi/wallpaper/rgs.png' ?>" alt="" class="img-fuid" style="max-height: 100px;">
+                        <br>
+                        <strong>PT. Rekatama Global Sinergi</strong>
+                    <% } else { %>
+                        <h1 class="mt-5">
+                            <strong>
+                                DATA NOT FOUND
+                            </strong>
+                        </h1>
+                    <% } %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.body.style.background = "#f3f3f3 url('/assets/images/abstract.jpg') no-repeat right top";
+    </script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<div class="app-sidebar sidebar-shadow">
+    <div class="app-header__logo">
+        <div class="logo-src"></div>
+        <div class="header__pane ml-auto">
+            <div>
+                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                    <span class="hamburger-box">
+                        <span class="hamburger-inner"></span>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="app-header__mobile-menu">
+        <div>
+            <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+        </div>
+    </div>
+    <div class="app-header__menu">
+        <span>
+            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                <span class="btn-icon-wrapper">
+                    <i class="fa fa-ellipsis-v fa-w-6"></i>
+                </span>
+            </button>
+        </span>
+    </div>
+    <div class="scrollbar-sidebar">
+        <div class="app-sidebar__inner">
+            <ul class="vertical-nav-menu">
+                <li class="app-sidebar__heading">Absen</li>
+                <li data-url="absen">
+                    <a href="/absen">
+                        <i class="metismenu-icon pe-7s-alarm"></i>
+                        Absen Digital
+                    </a>
+                </li>
+
+                <li class="app-sidebar__heading">Main Menu</li>
+                <li data-url="items_control">
+                    <a>
+                        <i class="metismenu-icon pe-7s-box1"></i>
+                        LOGISTIC
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/items_control">
+                                <i class="metismenu-icon"></i>
+                                ITEMS CONTROL
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/items_control/assets_control">
+                                <i class="metismenu-icon"></i>
+                                ASSETS CONTROL
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/items_control/site_logistic">
+                                <i class="metismenu-icon"></i>
+                                SITE LOGISTIC
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li data-url="dpm_control">
+                    <a>
+                        <i class="metismenu-icon pe-7s-ribbon"></i>
+                        DPM MENU
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/dpm_control">
+                                <i class="metismenu-icon"></i>
+                                DPM CONTROL
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/dpm_control/dpm_new">
+                                <i class="metismenu-icon"></i>
+                                NEW DPM
+                            </a>
+                        </li>
+                        <% if(userLevel == 'purchasing' || userLevel == 'cost controll' || userLevel == 'po' || userLevel == 'bod' || userLevel == 'payment' || userLevel == 'admin') { %>
+                        <li>
+                            <a href="/dpm_control/dpm_new_by_memo">
+                                <i class="metismenu-icon"></i>
+                                NEW DPM BY SITE MEMO
+                            </a>
+                        </li>
+                        <% } %>
+                    </ul>
+                </li>
+                <li data-url="apple_control">
+                    <a>
+                        <i class="metismenu-icon pe-7s-cash"></i>
+                        Appe 2 Apple
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/apple_control/dpm">
+                                <i class="metismenu-icon"></i>
+                                DPM Apple2Apple
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/apple_control/pengajuan">
+                                <i class="metismenu-icon"></i>
+                                Apple2Apple Purchasing
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/apple_control/pengajuan_cost_controll">
+                                <i class="metismenu-icon"></i>
+                                Apple2Apple Cost Controll
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/apple_control/revisi">
+                                <i class="metismenu-icon"></i>
+                                Apple2Apple Revisi
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/apple_control/approve">
+                                <i class="metismenu-icon"></i>
+                                Apple2Apple Approve
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <% if (userLevel == 'purchasing' || userLevel == 'cost controll' || userLevel == 'po' || userLevel == 'logistic' || userLevel == 'director' ||  userLevel == 'payment' || userLevel == 'admin') { %>
+                <li data-url="purchase_orders">
+                    <a>
+                        <i class="metismenu-icon pe-7s-note"></i>
+                        Purchase Orders
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/purchase_orders">
+                                <i class="metismenu-icon"></i>
+                                PO Control
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/purchase_orders/pengajuan">
+                                <i class="metismenu-icon"></i>
+                                PO Pengajuan
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/purchase_orders/revisi">
+                                <i class="metismenu-icon"></i>
+                                PO Revisi
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/purchase_orders/po_new">
+                                <i class="metismenu-icon"></i>
+                                New PO
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <% } %>
+
+                <% if (userLevel == 'project manager' || userLevel == 'cost controll' || userLevel == 'purchasing' || userLevel == 'po' || userLevel == 'payment' || userLevel == 'director' || userLevel == 'admin') { %>
+                <li>
+                    <a>
+                        <i class="metismenu-icon pe-7s-note2"></i>
+                        SPK
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <% if (userLevel == 'project manager' || userLevel == 'cost controll' || userLevel == 'po' || userLevel == 'payment' || userLevel == 'director' || userLevel == 'admin') { %>
+                        <li data-url="spk_control">
+                            <a href="/spk_control">
+                                <i class="metismenu-icon"></i>
+                                SPK Control
+                            </a>
+                        </li>
+                        <% } %>
+                        <li data-url="spk_pengajuan">
+                            <a href="/spk_pengajuan">
+                                <i class="metismenu-icon"></i>
+                                SPK Pengajuan
+                            </a>
+                        </li>
+                        <li data-url="spk_revisi">
+                            <a href="/spk_revisi">
+                                <i class="metismenu-icon"></i>
+                                SPK Revisi
+                            </a>
+                        </li>
+                        <li data-url="spk_approve">
+                            <a href="/spk_approve">
+                                <i class="metismenu-icon"></i>
+                                SPK Approve
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <% } %>
+
+                <li data-url="rekanan">
+                    <a>
+                        <i class="metismenu-icon pe-7s-users"></i>
+                        REKANAN
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/rekanan/mandor">
+                                <i class="metismenu-icon"></i>
+                                Mandor
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/rekanan/supplier">
+                                <i class="metismenu-icon"></i>
+                                Supplier
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="app-sidebar__heading">Chatting</li>
+                <li data-url="chatting">
+                    <a href="/">
+                        <i class="metismenu-icon pe-7s-chat"></i>
+                        ROOMS
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/chatting/projects">
+                                <i class="metismenu-icon"></i>Projects
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/chatting/users">
+                                <i class="metismenu-icon"></i>Users
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="app-sidebar__heading">Setting</li>
+                
+                <% if (userLevel == 'director' || userLevel == 'admin') { %>
+                <li data-url="list_users">
+                    <a href="/list_users">
+                        <i class="metismenu-icon pe-7s-display2"></i>
+                        USER
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/list_users">
+                                <i class="metismenu-icon"></i>DAFTAR USER
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <% } %>
+                
+                <li data-url="project">
+                    <a href="/project">
+                        <i class="metismenu-icon pe-7s-rocket"></i>
+                        PROJECT
+                    </a>
+                </li>
+                
+                <% if (userLevel == 'director' || userLevel == 'admin') { %>
+                <li data-url="verification_control">
+                    <a href="">
+                        <i class="metismenu-icon pe-7s-check"></i>
+                        VERIFICATION
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                    <ul>
+                        <li>
+                            <a href="/verification_control">
+                                <i class="metismenu-icon"></i>All data Verification
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/verification_control/approve">
+                                <i class="metismenu-icon"></i>Verification Approved
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/verification_control/revisi">
+                                <i class="metismenu-icon"></i>Verification Revisi
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/verification_control/pengajuan">
+                                <i class="metismenu-icon"></i>Verification Pengajuan
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <% } %>
+
+            </ul>
+        </div>
+    </div>
+</div>

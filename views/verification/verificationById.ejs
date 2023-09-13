@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+                    
+                    <div class="row">
+                        <div class="col-md-12 col-xl-12">
+                            <div class="card mb-3">
+                                <div class="widget-content-outer px-2 py-2">
+
+                                    <div class="row">
+                                        <% JSON.stringify(qr) %>
+                                    </div>
+
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td>Petugas</td>
+                                                <td class="px-2">:</td>
+                                                <td><%= qr.ver_message_1 %></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Director</td>
+                                                <td class="px-2">:</td>
+                                                <td><%= qr.ver_message_2 %></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <hr>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5>
+                                                <a href="/purchase_orders?project=<%= po[0].project %>&po_number=<%= po[0].po_number %>" style="text-decoration: none; font-weight: bold;">
+                                                    <%= po[0].po_number %>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div>
+                                            <button id="approval-qr" class="btn update-ver" data-id="<%= qr.ver_id %>" data-status="<%= qr.ver_status %>" data-key="<%= qr.ver_key %>" data-po="<%= qr.ver_number %>" data-project="<%= qr.project %>">
+                                                <i class="fas <%= qr.ver_status == 0 ? 'fa-toggle-off' : 'fa-toggle-on' %> fa-3x"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-sm table-hover table-striped">
+                                        <thead class="table-dark text-center">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Project</th>
+                                                <th>Dpm Number</th>
+                                                <th>Item</th>
+                                                <th>Detail</th>
+                                                <th>Jumlah</th>
+                                                <th>Harga</th>
+                                                <th>Sub Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="data-item-po">
+                                            <% let total = 0 %>
+                                            <% for (let i = 0; i < po.length; i++) { %>
+                                                <% total += po[i].po_qty * po[i].po_price %>
+                                                <tr>
+                                                    <td class="align-top text-center"><%= i + 1 %></td>
+                                                    <td class="align-top"><%= po[i].project %></td>
+                                                    <td class="align-top"><%= po[i].number %></td>
+                                                    <td class="align-top"><%= po[i].item %></td>
+                                                    <td class="align-top"><%= po[i].note %></td>
+                                                    <td class="align-top text-right"><%= po[i].po_qty+' '+po[i].unit %></td>
+                                                    <td class="align-top text-right"><%= po[i].po_price.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                    <td class="align-top text-right"><%= (po[i].po_qty * po[i].po_price).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                        <tfoot id="data-item-po-footer">
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="font-weight-bold text-right">Grand Total</td>
+                                                <td class="font-weight-bold text-right" id="grand-total"><%= total.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+                                    <hr>
+                                    
+                                    <table class="table table-sm table-hover table-striped">
+                                        <tbody>
+
+                                            <tr>
+                                                <td class="align-top" style="min-width: 300px;">1. Cara Pembayaran</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><%= po[0].payment%></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">2. Jadwal Pengiriman</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><%= po[0].jadwal %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">3. Alamat Pengiriman</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><%= po[0].alamat %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">4. Penerima Material Proyek</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><%= po[0].penerima %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">5. Syarat Penagihan Harus Melapirkan</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top">
+                                                    <textarea class="form-control" readonly rows="12"><%- po[0].syarat %></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">6. Catatan</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><%= po[0].catatan %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">7. Pelunasan</td>
+                                                <td class="align-top">:</td>
+                                                <td id="pelunasan" class="align-top">
+                                                    - <%= po[0].bank%><br>
+                                                    - <%= po[0].account %><br>
+                                                    - <%= po[0].atas_nama %>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-sm table-hover table-striped">
+                                        <tbody class="text-center">
+                                            <tr style="height: 200px;">
+                                                <td class="align-top" style="min-width: 25vw;">
+                                                    Jakarta, <%= new Date(po[0].created).toLocaleDateString('id-ID', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'}) %>
+                                                    <br>
+                                                    Hormat kami,
+                                                </td>
+                                                <td class="align-top" style="min-width: 25vw"></td>
+                                                <td class="align-top" style="min-width: 25vw;">Disetujui oleh</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-weight-bold"><u>Ir. Yuris Armanto</u></span>
+                                                    <br>
+                                                    <i>Direktur Utama</i>
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <%=  po[0].name %>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="row">
+                                        <div class="container" id="submit-po"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+                    
+                    $(document).on('click', '.update-ver', function() {
+                        const id = $(this).attr('data-id')
+                        const status = $(this).attr('data-status')
+                        const key = $(this).attr('data-key')
+                        const po = $(this).attr('data-po')
+                        const project = $(this).attr('data-project')
+                        swal.fire({
+                            icon: 'warning',
+                            title: 'UPDATE VERIFICATION',
+                            html: `PO NOMOR : ${po}<br>Project: ${project}<br><br>
+                            <select name="status" class="form-control">
+                                <option value="0" ${0 == status ? 'selected' : ''}>Pengajuan</option>
+                                <option value="1" ${1 == status ? 'selected' : ''}>Revisi</option>
+                                <option value="2" ${2 == status ? 'selected' : ''}>Approve</option>
+                            </select>
+                            <textarea name="message_2" class="form-control" placeholder="pesan/catatan"></textarea>`,
+                            confirmButtonText: 'SUBMIT',
+                            showCancelButton: true,
+                            preConfirm: () => {
+                                const newStatus = document.querySelector('[name="status"]').value
+                                const pesan = document.querySelector('[name="message_2"]').value
+                                if (status == newStatus) return swal.showValidationMessage('Status lama dan status perubahan sama<br>Tidak bisa melakukan proses')
+                                if (status != newStatus && pesan != '') return {newStatus, pesan}
+                                swal.showValidationMessage('Pesan wajib diisi')
+                            }
+                        }).then( e => {
+                            if (e.isConfirmed) {
+                                const data = {id: id, newStatus: e.value.newStatus, pesan: e.value.pesan}
+                                putData('/verification_control/approval', data)
+                                .then( response => {
+                                    if (response.status == 'success') {
+                                        location.replace('/verification_control/pengajuan')
+                                    } else {
+                                        toastFailed(response.message)
+                                    }
+                                })
+                            }
+                        })
+                    })
+
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

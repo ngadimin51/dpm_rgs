@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <% if (userLevel == 'payment' || userLevel == 'director' || userLevel == 'admin') { %>
+                        <div class="row mb-3">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <select id="project" class="custom-select">
+                                                    <option value="">Pilih Project</option>
+                                                    <% for(let i = 0; i < project.length; i++) { %>
+                                                        <option value="<%= project[i].name %>" <%= locals.projectSelected && locals.projectSelected == project[i].name ? 'selected' : '' %>><%= project[i].name %></option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <%
+                                                    sekarang = new Date()
+                                                    tahun = sekarang.getFullYear()
+                                                    bulan = sekarang.getMonth() + 1
+                                                    bulan = bulan < 10 ? '0'+bulan : bulan
+                                                    tanggal = sekarang.getDate()
+                                                    tanggal = tanggal < 10 ? '0'+tanggal : tanggal
+                                                    hasil = tahun+'-'+bulan+'-'+tanggal
+                                                %>
+                                                <input type="date" id="tanggal" class="form-control" value="<%= locals.tanggalSelected ? tanggalSelected : hasil %>">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button id="get-data" class="btn btn-danger">Check</button>
+                                                <button id="download-data" class="btn btn-primary float-right">Download</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped table-hover">
+                                            <thead class="table-dark text-center">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nama</th>
+                                                    <th>Project</th>
+                                                    <th>Alasan</th>
+                                                    <th>Masuk</th>
+                                                    <th>Pulang</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% for (let i = 0; i < today.length; i++) { %>
+                                                    <tr>
+                                                        <td class="align-top"><%= i + 1 %></td>
+                                                        <td class="align-top"><%= today[i].name %></td>
+                                                        <td class="align-top"><%= today[i].project %></td>
+                                                        <td class="align-top">
+                                                            <%= typeof today[i].absen[0] !== 'undefined' ? today[i].absen[0].user_keterangan : '-' %>
+                                                        </td>
+                                                        <td class="align-top">
+                                                            <% const absen = today[i].absen %>
+                                                            <% if (absen.length > 0 ) { %>
+                                                                <% for(let i = 0; i < absen.length; i++) { %>
+                                                                    <% const x = absen[i] %>
+                                                                    <% const created = x.created.toLocaleTimeString('en-US') %>
+                                                                    <% let split = created.split(' ') %>
+                                                                    
+                                                                    <% if (split[1] == 'AM') { %>
+                                                                        <div class="mx-auto">
+                                                                            <%= split[1] == 'AM' ? created : '' %>
+                                                                            <button class="btn btn-light shadow show-map" data-lat="<%= x.user_lat %>" data-lon="<%= x.user_lon %>" data-time="<%= created %>">
+                                                                                <i class="pe-7s-map pe-2x"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    <% } %>
+                                                                <% } %>
+                                                            <% } else { %>
+                                                                <button class="btn btn-light text-danger shadow show-map mb-1 mr-2">
+                                                                    <i class="fas fa-times"></i>
+                                                                </button>
+                                                            <% } %>
+                                                        </td>
+                                                        <td class="align-top">
+                                                            <% if (absen.length > 0 ) { %>
+                                                                <% for(let i = 0; i < absen.length; i++) { %>
+                                                                    <% const x = absen[i] %>
+                                                                    <% const created = x.created.toLocaleTimeString('en-US') %>
+                                                                    <% let split = created.split(' ') %>
+                                                                    
+                                                                    <% if (split[1] == 'PM') { %>
+                                                                        <div class="mx-auto">
+                                                                            <%= split[1] == 'PM' ? created : '' %>
+                                                                            <br>
+                                                                            <button class="btn btn-light shadow show-map mb-1 mr-2" data-lat="<%= x.user_lat %>" data-lon="<%= x.user_lon %>" data-time="<%= created %>">
+                                                                                <i class="pe-7s-map pe-2x"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    <% } %>
+                                                                <% } %>
+                                                            <% } else { %>
+                                                                <button class="btn btn-light text-danger shadow show-map mb-1">
+                                                                    <i class="fas fa-times"></i>
+                                                                </button>
+                                                            <% } %>
+                                                        </td>
+                                                    </tr>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                <div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+
+        $(document).on('click', '#get-data', function() {
+            const project = $('#project').val()
+            const tanggal = $('#tanggal').val()
+            if (project && !tanggal) {
+                location.href = '/absen/control?project='+project
+            } else if (project && tanggal) {
+                location.href = '/absen/control?project='+project+'&tanggal='+tanggal
+            } else {
+                location.href = '/absen/control?&tanggal='+tanggal
+            }
+        })
+
+        $(document).on('click', '.show-map', function() {
+            const lat = $(this).attr('data-lat')
+            const lon = $(this).attr('data-lon')
+            const time = $(this).attr('data-time')
+            let MAPS = `<iframe 
+                frameborder="0"
+                scrolling="no"
+                marginheight="0"
+                marginwidth="0"
+                src="https://maps.google.com/maps?q=${lat},${lon}&hl=in&z=14&amp;output=embed" style="width: 100%; height: 60vh;">
+            </iframe>`
+            swal.fire({
+                html: MAPS+'<b>TIME : '+time+'<b>',
+                showConfirmButton: false
+            })
+        })
+
+        $(document).on('click', '#download-data', function() {
+
+            const date = new Date()
+            const start = 2020
+            const tahun = date.getFullYear()
+            const bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']
+
+            let optTahun = ''
+            for (let i = 0; i < tahun-start; i++) {
+                optTahun += `<option value="${start + i + 1}">${start + i + 1}</option>`
+            }
+
+            let optBulan = ''
+            for (let i = 0; i < bulan.length; i++) {
+                const bln = i < 10 ? '0'+(i+1) : (i+1)
+                optBulan += `<option value="${bln}">${bulan[i]}</option>`
+            }
+            
+            swal.fire({
+                html: `<label>Project</label>
+                <select id="daftar-project" class="form-control"></select>
+                <label>Tahun</label>
+                <select id="tahun" class="form-control">${optTahun}</select>
+                <label>Bulan</label>
+                <select id="bulan" class="form-control">${optBulan}</select>
+                <a id="link-download" href="" class="btn btn-primary mt-2" target="_blank">DOWNLOAD</a>`,
+                showConfirmButton: false
+            })
+
+            const projectList = document.getElementById('project').innerHTML
+            document.getElementById('daftar-project').innerHTML = projectList
+            const linkDownload = document.getElementById('link-download')
+
+            $(document).on('change', '#daftar-project', function() {
+                getData()
+            })
+            $(document).on('change', '#tahun', function() {
+                getData()
+            })
+            $(document).on('change', '#bulan', function() {
+                getData()
+            })
+
+            function getData() {
+                const project = $('#daftar-project').val()
+                const tahun = $('#tahun').val()
+                const bulan = $('#bulan').val()
+                $('#link-download').attr('href', `/absen/download?project=${project}&tahun=${tahun}&bulan=${bulan}`)
+            }
+
+            $(document).on('click', '#link-download', function(e) {
+                const project = $('#daftar-project').val()
+                const tahun = $('#tahun').val()
+                const bulan = $('#bulan').val()
+                if (!project || !tahun || !bulan) {
+                    e.preventDefault()
+                } else {
+                    swal.close()
+                }
+            })
+            
+        })
+
+    </script>
+
+</body>
+</html>

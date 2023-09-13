@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+    <%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+        <%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+            <%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="d-flex justify-content-end mb-2">
+                    <% if (userLevel == 'admin') { %>
+                        <button id="developer" class="btn btn-sm <%= developer[0].status == 1 ? 'text-success' : 'text-secondary' %>" data-dev="<%= developer[0].status %> %>">
+                            <i id="icon-dev" class="<%= developer[0].status == 1 ? 'fas fa-toggle-on' : 'fas fa-toggle-off' %> fa-3x"></i>
+                        </button>
+                    <% } %>
+                        <button id="add-project" class="btn btn-sm btn-primary">
+                            ADD PROJECT
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        
+                        <% for (i = 0; i < project.length; i++) { %>
+
+                            <div class="col-md-6 col-xl-4">
+                                <a href="/project?id=<%= project[i].id %>" class="text-dark" style="text-decoration: nonde;">
+                                    <div class="card mb-3 widget-content bg-plum-plate">
+                                        <div class="widget-content-wrapper text-dark">
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">
+                                                    <button class="mb-2 mr-2 btn btn-warning"><%= project[i].name %></button>
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-right">
+                                                <div class="widget-numbers text-white">
+                                                    <i class="fas fa-users"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        <% } %>
+
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        
+        const dev = document.querySelector('#developer')
+        
+        dev.addEventListener('click', () => {
+            const val = dev.getAttribute('data-dev')
+            const target = document.querySelector('#icon-dev')
+            const status = val == 1 ? 0 : 1
+            putData('/API/dev', {status})
+                .then( res => {
+                    if (res.affectedRows == 1) {
+                        if (val == 1) {
+                            dev.setAttribute('data-dev', 0)
+                            dev.classList.remove('text-success')
+                            dev.classList.add('text-secondary')
+                            target.classList.remove('fa-toggle-on')
+                            target.classList.add('fa-toggle-off')
+                        } else {
+                            dev.setAttribute('data-dev', 1)
+                            dev.classList.add('text-success')
+                            dev.classList.remove('text-secondary')
+                            target.classList.remove('fa-toggle-off')
+                            target.classList.add('fa-toggle-on')
+                        }
+                    }
+                })
+        })
+
+        $('#add-project').click(function() {
+            swal.fire({
+                title: 'ADD PROJECT',
+                html: `<label>Name</label>
+                <input type="text" class="form-control" name="name" />
+                <label>code</label>
+                <input type="text" class="form-control" name="code" />
+                <label>Decription</label>
+                <textarea class="form-control description"></textarea>`,
+                preConfirm: () => {
+                    const name = $('[name="name"]').val().trim()
+                    const code = $('[name="code"]').val().trim()
+                    const desc = $('.description').val().trim()
+                    if (!name) {
+                        $('[name="name"]').focus()
+                        swal.showValidationMessage("Name is empty")
+                    } else if (!code) {
+                        $('[name="code"]').focus()
+                        swal.showValidationMessage("Code is empty")
+                    } else if (!desc) {
+                        $('.description').focus()
+                        swal.showValidationMessage("Description is empty")
+                    } else {
+                        return {name, code, desc}
+                    }
+                }
+            })
+            .then( e => {
+                if (e.isConfirmed) {
+                    postData('/project/add', e.value)
+                        .then( res => {
+                            if (res.status == 'success') {
+                                location.reload()
+                            }
+                            toastFailed(res.message)
+                        })
+                }
+            })
+        })
+
+    </script>
+
+</body>
+</html>

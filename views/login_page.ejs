@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2129322076594459" crossorigin="anonymous"></script> -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+
+    <link href="/custom.css" rel="stylesheet">
+    <link href="/main.css" rel="stylesheet">
+    <script type="text/javascript" src="/assets/scripts/main.js"></script>
+
+</head>
+<body>
+
+    <div id="loader">
+        <div class="d-flex justify-content-center align-items-center w-100 h-100">
+            <span class="text-white">LOADING</span>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center w-100 h-100 px-5">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 border border-primary rounded py-3 px-3 shadow">
+            <div class="text-center">
+                <img src="/assets/images/icon_rgs.png" class="img-fluid" style="max-width: 100px;">
+            </div>
+            <div id="notif-wrapper">
+            </div>
+            <form id="login-form" action="/auth" method="post">
+                <label for="username" class="font-weight-bold">Username</label>
+                <input id="username" name="username" type="text" class="form-control" required>
+                <label for="password" class="font-weight-bold">Password</label>
+                <input id="password" name="password" type="password" class="form-control" required>
+                <button id="submit-login" class="btn btn-sm btn-danger mt-3 float-right">SUBMIT</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+
+    </div>
+
+    <script src="/login.js"></script>
+
+</body>
+</html>

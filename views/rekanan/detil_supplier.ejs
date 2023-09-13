@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div class="col-md-12 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="card-body">
+
+                                    <% if (locals.supplier) { %>
+                                        <form id="form-update-supplier" data-id="<%= supplier.id %>">
+                                            
+                                            <div class="form-row">
+                                                <div class="col-md-4">
+                                                    <div class="position-relative form-group">
+                                                        <label for="nama" class="font-weight-bold text-danger">Supplier</label>
+                                                        <input name="nama" id="nama" placeholder="..." type="text" class="form-control" value="<%= supplier.name %>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="position-relative form-group">
+                                                        <label for="pic" class="font-weight-bold text-danger">PIC</label>
+                                                        <input name="pic" id="pic" placeholder="..." type="text" class="form-control" value="<%= supplier.pic %>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="position-relative form-group">
+                                                        <label for="hp" class="font-weight-bold text-danger">HP</label>
+                                                        <input name="hp" id="hp" placeholder="..." type="number" class="form-control" value="<%= supplier.phone %>">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr>
+
+                                            <div class="position-relative form-group">
+                                                <label for="alamat" class="font-weight-bold text-danger">Alamat</label>
+                                                <textarea name="alamat" id="lamat" rows="3" class="form-control"><%- supplier.address %></textarea>
+                                            </div>
+
+                                            <hr>
+
+                                            <div class="form-row">
+                                                <div class="col-md-4">
+                                                    <div class="position-relative form-group">
+                                                        <label for="bank" class="">Bank</label>
+                                                        <input name="bank" id="bank" placeholder="..." type="text" class="form-control" value="<%= supplier.bank ? supplier.bank : '' %>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="position-relative form-group">
+                                                        <label for="an" class="">ATAS NAMA</label>
+                                                        <input name="an" id="an" placeholder="..." type="text" class="form-control" value="<%= supplier.atas_nama ? supplier.atas_nama : '' %>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="position-relative form-group">
+                                                        <label for="account" class="">Nomor Rekening</label>
+                                                        <input name="account" id="account" placeholder="..." type="text" class="form-control" value="<%= supplier.account ? supplier.account : '' %>">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <hr>
+
+                                            <div class="form-row">
+                                                <div class="col-md-4">
+                                                    <label for="sales1" class="">SALES 1</label>
+                                                    <input name="sales1" id="sales1" placeholder="..." type="text" class="form-control mb-3" value="<%= supplier.sales1 ? supplier.sales1 : '' %>">
+                                                    <label for="sales2" class="">SALES 2</label>
+                                                    <input name="sales2" id="sales2" placeholder="..." type="text" class="form-control mb-3" value="<%= supplier.sales2 ? supplier.sales2 : '' %>">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="salesphone1" class="">SALES PHONE 1</label>
+                                                    <input name="salesphone1" id="salesphone1" placeholder="..." type="text" class="form-control mb-3" value="<%= supplier.salesphone1 ? supplier.salesphone1 : '' %>">
+                                                    <label for="salesphone2" class="">SALES PHONE 2</label>
+                                                    <input name="salesphone2" id="salesphone2" placeholder="..." type="text" class="form-control mb-3" value="<%= supplier.salesphone2 ? supplier.salesphone2 : '' %>">
+                                                </div>
+                                            </div>
+
+                                            <hr>
+
+                                            <div class="position-relative form-group">
+                                                <label for="note" class="">Note</label>
+                                                <input name="note" id="note" placeholder="..." type="text" class="form-control mb-3" value="<%= supplier.note %>">
+                                            </div>
+                                            <button class="mt-2 btn btn-primary">Simpan</button>
+                                        </form>
+                                    <% } %>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <form class="row" id="supplier-item"></form>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <%= supplier.products %>
+
+                <script>
+
+                    let products = '<%= supplier.products !== null ? supplier.products : [] %>'.replace(/&#34;/g, '"')
+                    products = JSON.parse(products)
+
+                    const supplierId = '<%= supplier.id %>'
+
+                    const formUpdateSupplier = document.querySelector('#form-update-supplier')
+                    const id = formUpdateSupplier.getAttribute('data-id')
+                    formUpdateSupplier.addEventListener('submit', (e) => {
+                        e.preventDefault()
+                    })
+                    if (formUpdateSupplier) {
+                        formUpdateSupplier.addEventListener('submit', (e) => {
+                            e.preventDefault()
+                            const formData = new FormData(formUpdateSupplier)
+                            let data = {}
+                            formData.forEach( (val, key) => {
+                                data[key] = val
+                            })
+                            data.id = id
+                            // return console.log(data)
+                            postData('/rekanan/supplier/update', data)
+                            .then ( resp => {
+                                console.log(resp)
+                                if (resp.status == 'success') {
+                                    toastSuccess(resp.message)
+                                } else {
+                                    toastFailed(resp.message)
+                                }
+                            })
+                        })
+                    }
+
+                    function itemList(array) {
+                        // if (array.length)
+                        let div = ""
+                        array.forEach( (x, i) => {
+                            div += `<div class="col-md-4">
+                                <div class="mb-3 card">
+                                    <div class="card-header d-flex justify-content-between">
+                                        Product ${i+1}
+                                        <button type="button" data-record="${i}" class="btn btn-sm btn-outline-danger hapus-item">Hapus</button>
+                                    </div>
+                                    <div class="card-body">
+                                        <label for="product${i+1}" class="">Nama</label>
+                                        <input name="product-${i+1}" id="product${i+1}" placeholder="..." type="text" class="form-control mb-3" value="${x[0]}">
+                                        <label for="price${i+1}" class="">Harga</label>
+                                        <input name="price-${i+1}" id="price${i+1}" placeholder="..." type="text" class="form-control mb-3" value="${x[1]}">
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <button class="btn btn-sm btn-success">save</button>
+                                        ${array.length - 1 == i ? '<button type="button" class="btn btn-sm btn-primary add-product">Add</button>' : ''}
+                                    </div>
+                                </div>
+                            </div>`
+                        })
+                        $("#supplier-item").html(div)
+                        // console.log(div)
+                    }
+
+                    itemList(products)
+
+                    $('#supplier-item').submit(function(e) {
+                        e.preventDefault()
+                        const formData = new FormData(e.target)
+                        let array = []
+                        products.forEach( (x, i) => {
+                            const product = formData.get('product-'+(i + 1))
+                            const price = formData.get('price-'+(i + 1))
+                            array.push([product, price])
+                        })
+                        if (JSON.stringify(array) === JSON.stringify(products)) {
+                            toastFailed("Tidak ada perubahan data")
+                            return false
+                        }
+                        submitItems(array)
+                    })
+
+                    $(document).on('click', '.hapus-item', function() {
+                        const index = $(this).attr('data-record')
+                        if (products.length == 1) {
+                            swal.fire({
+                                icon: 'error',
+                                title: 'Minimal 1 item harus tersisa dalam supplier'
+                            })
+                        } else {
+                            swal.fire({
+                                icon: 'warning',
+                                html: 'Item ini akan dihapus?',
+                                showCancelButton: true
+                            }).then ( e => {
+                                if (e.isConfirmed) {
+                                    products.forEach( (x, i ) => {
+                                        if (i == index)
+                                        products.splice(index, 1)
+                                    })
+                                    submitItems(products)
+                                    // itemList(products)
+                                    // console.log(products)
+                                }
+                            })
+                        }
+                    })
+
+                    $(document).on('click', '.add-product', function() {
+                        swal.fire({
+                            icon: 'info',
+                            html: `<label for="newProduct" class="">Nama</label>
+                            <input name="newProduct" id="newProduct" placeholder="..." type="text" class="form-control mb-3">
+                            <label for="newPrice" class="">Harga</label>
+                            <input name="newPrice" id="newPrice" placeholder="..." type="number" step="any" class="form-control mb-3" value="0">`,
+                            preConfirm: () => {
+                                const product = $('input[name="newProduct"]').val()
+                                const price = $('input[name="newPrice"]').val()
+                                if (!product) {
+                                    swal.showValidationMessage("Check nama product")
+                                } else if (parseFloat(price) < 0) {
+                                    swal.showValidationMessage("Check harga")
+                                } else {
+                                    return {product, price}
+                                }
+                            },
+                            showCancelButton: true
+                        }).then( e => {
+                            if (e.isConfirmed) {
+                                // itemList([...products, e.value])
+                                // const newProduct = [e.value.product, e.value.price]
+                                products = [...products, [e.value.product, e.value.price]]
+                                // console.log(products)
+                                submitItems(products)
+                            }
+                        })
+                    })
+
+                    function submitItems(array) {
+                        $.post({
+                            url: `/rekanan/supplier/update_item`,
+                            data: {id: supplierId, products: JSON.stringify(array)},
+                            success: (result) => {
+                                if (result.status == 'success') {
+                                    itemList(array)
+                                    products = array
+                                }
+                                swal.fire({icon: result.status == 'success' ? 'success' : 'error', html: result.message})
+                                // console.log(result)
+                            }
+                        })
+                    }
+
+                </script>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

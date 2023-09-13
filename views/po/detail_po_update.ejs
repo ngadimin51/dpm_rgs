@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title><%= locals.title ? title : 'RGS' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="Web App PT.Rekatama Global Sinergi.">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+	<!--
+    =========================================================
+    * ArchitectUI HTML Theme Dashboard - v1.0.0
+    =========================================================
+    * Product Page: https://dashboardpack.com
+    * Copyright 2019 DashboardPack (https://dashboardpack.com)
+    * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+    =========================================================
+    * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    -->
+    
+	<%- include('../partial/header') %>
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        
+		<%- include('../partial/app-header') %>
+        <%- include('../partial/ui-theme-setting') %>
+		
+        <div class="app-main">
+
+			<%- include('../partial/menu') %>
+
+            <div id="test" class="app-main__outer">
+                <div class="app-main__inner">
+
+                    <%- include('../partial/app-page-title') %>
+                    
+                    <div class="row">
+                        <div class="col-md-12 col-xl-12">
+                            <div class="card mb-3">
+                                <div class="widget-content-outer px-2 py-2">
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label class="font-weight-bold">PO Number</label>
+                                            <div class="form-control"><%= po.po_number %></div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="font-weight-bold">SUBMIT PERUBAHAN</label><br>
+                                            <button id="submit-perubahan" class="btn btn-danger">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <br>
+                                            <a href="/purchase_orders?project=<%= po.project %>&po_number=<%= po.po_number %>" class="btn btn-sm btn-warning font-weight-bold float-right">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+<!-- <pre><%= JSON.stringify(poDetail, undefined, 2)%></pre> -->
+                                    <table class="table table-sm table-hover table-striped">
+                                        <thead class="table-dark text-center">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Project</th>
+                                                <th>Dpm Number</th>
+                                                <th>Item</th>
+                                                <th>Catatan / Lapangan</th>
+                                                <th>Detail</th>
+                                                <th>Jumlah</th>
+                                                <th>Harga</th>
+                                                <th>Sub Total</th>
+                                                <th>Po</th>
+                                                <th>Apple</th>
+                                                <th>Update</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="data-item-po">
+                                            <% let total = 0 %>
+                                            <% for (let i = 0; i < poDetail.length; i++) { %>
+                                                <% total += poDetail[i].po_status == 0 ? poDetail[i].po_qty * poDetail[i].po_price : 0 %>
+                                                <tr>
+                                                    <td class="align-top text-center"><%= i + 1 %></td>
+                                                    <td class="align-top"><%= poDetail[i].project %></td>
+                                                    <td class="align-top"><%= poDetail[i].number %></td>
+                                                    <td class="align-top"><%= poDetail[i].item %></td>
+                                                    <td class="align-top"><%= poDetail[i].catatan_lapangan %></td>
+                                                    <td class="align-top"><%= poDetail[i].po_item_update %></td>
+                                                    <td class="align-top text-right"><%= poDetail[i].po_qty+' '+poDetail[i].unit %></td>
+                                                    <td class="align-top text-right"><%= poDetail[i].po_price.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                    <td class="align-top text-right"><%= (poDetail[i].po_qty * poDetail[i].po_price).toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                    <td class="text-center">
+                                                        <input class="po-status" data-dpm-id="<%= poDetail[i].dpm_id %>" data-id="<%= poDetail[i].po_id %>" data-sub-total="<%= poDetail[i].po_qty * poDetail[i].po_price %>" data-po-status="<%= poDetail[i].po_status %>" type="checkbox" <%= poDetail[i].po_status == 0 ? 'checked' : '' %>>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <input class="apple-status" data-dpm-id="<%= poDetail[i].dpm_id %>" type="checkbox" <%= poDetail[i].appleStatus == 3 ? 'checked' : '' %>>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-warning update-item" data-item="<%= JSON.stringify(poDetail[i]) %>">
+                                                            UPDATE
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        </tbody>
+                                        <tfoot id="data-item-po-footer">
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="font-weight-bold text-right">Grand Total</td>
+                                                <td class="font-weight-bold text-right" id="grand-total"><%= total.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}) %></td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+                                    <hr>
+                                    
+                                    <table class="table table-sm table-hover table-striped">
+                                        <tbody>
+
+                                            <tr>
+                                                <td class="align-top">1. Cara Pembayaran</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input type="text" name="payment" class="form-control" value="<%= po.payment%>"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">2. Jadwal Pengiriman</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input type="text" name="jadwal" class="form-control" value="<%= po.jadwal %>"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">3. Alamat Pengiriman</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input name="alamat" type="text" class="form-control" value="<%= po.alamat %>"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">4. Penerima Material Proyek</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input name="penerima" type="text" class="form-control" value="<%= po.penerima %>"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">5. Syarat Penagihan Harus Melapirkan</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top">
+                                                    <textarea name="syarat" id="syarat" rows="10" class="form-control"><%- po.syarat %></textarea>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">6. Catatan</td>
+                                                <td class="align-top">:</td>
+                                                <td class="align-top"><input name="catatan" type="text" class="form-control" value="<%= po.catatan %>"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="align-top">7. Pelunasan</td>
+                                                <td class="align-top">:</td>
+                                                <td id="pelunasan" class="align-top">
+                                                    - <%= po.bank%><br>
+                                                    - <%= po.account %><br>
+                                                    - <%= po.atas_nama %>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                    <table class="table table-sm table-hover table-striped">
+                                        <tbody class="text-center">
+                                            <tr style="height: 200px;">
+                                                <td class="align-top" style="min-width: 25vw;">
+                                                    <%
+                                                        let d = new Date(po.created)
+                                                        let month = d.getMonth() + 1
+                                                        let date = d.getDate()
+                                                        let year = d.getFullYear()
+                                                        date = year +"-"+ (month < 10 ? '0'+month : month) +"-"+ (date < 10 ? '0'+date : date)
+                                                    %>
+                                                    Jakarta, <input name="tanggal" type="date" class="" value="<%= date %>">
+                                                    <br>
+                                                    Hormat kami,
+                                                </td>
+                                                <td class="align-top" style="min-width: 25vw"></td>
+                                                <td class="align-top" style="min-width: 25vw;">Disetujui oleh</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <span class="font-weight-bold"><u>Ir. Yuris Armanto</u></span>
+                                                    <br>
+                                                    <i>Direktur Utama</i>
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <select name="supplier" id="supplier" class="form-control">
+                                                        <option value=""></option>
+                                                        <% for (let i = 0; i < supplier.length; i++) { %>
+                                                            <option value="<%= supplier[i].id %>"  <%= po.supl == supplier[i].id ? 'selected' : '' %>><%= supplier[i].name %></option>
+                                                        <% } %>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div class="row">
+                                        <div class="container" id="submit-po"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <%- include('../partial/footer') %>
+
+                <script>
+
+                    $(document).on('click', '.update-item', function() {
+                        const data = $(this).attr('data-item')
+                        const json = JSON.parse(data)
+                        // console.log(json)
+                        swal.fire({
+                            title: 'UPDATE ITEM<br />'+json.item,
+                            html: `<div class="container">
+                                <div class="row">
+                                    <label for="detail">Detail</label>
+                                    <input id="detail" name="detail" type="text" class="form-control mb-2" value="${json.po_item_update}">
+                                    <label for="jumlah">Jumlah</label>
+                                    <input id="jumlah" name="jumlah" type="number" class="form-control mb-2" value="${json.po_qty}">
+                                    <label for="unit">Unit</label>
+                                    <input id="unit" name="unit" type="text" class="form-control mb-2" value="${json.unit}">
+                                    <label for="harga">Harga</label>
+                                    <input id="harga" name="harga" type="number" class="form-control mb-2" value="${json.po_price}">
+                                </div>
+                            </div>`,
+                            showCancelButton: true,
+                            preConfirm: () => {
+                                const detail = document.querySelector('#detail')
+                                const jumlah = document.querySelector('#jumlah')
+                                const unit = document.querySelector('#unit')
+                                const harga = document.querySelector('#harga')
+                                if (!detail.value) {
+                                    detail.focus()
+                                    swal.showValidationMessage("Periksa detail")
+                                } else if (!jumlah.value || parseInt(jumlah.value) < 0) {
+                                    jumlah.focus()
+                                    swal.showValidationMessage("Jumlah minimal 1 dan hanya berupa angka")
+                                } else if (!unit.value) {
+                                    unit.focus()
+                                    swal.showValidationMessage("Periksa unit")
+                                } else if (!harga.value || parseInt(harga.value) < 0) {
+                                    harga.focus()
+                                    swal.showValidationMessage("Harga minimal 1 dan hanya berupa angka")
+                                } else {
+                                    return {detail: detail.value, jumlah: jumlah.value, unit: unit.value, harga: harga.value}
+                                }
+                            }
+                        }).then ( async e => {
+                            if (e.isConfirmed) {
+                                // const res = await fetch('/purchase_orders/update_satuan_po', {method: 'PUT', body: JSON.stringify({...e.value, po_id: json.po_id, dpm_id: json.dpm_id})})
+                                // console.log(await res.json())
+                                const update = await putData('/purchase_orders/update_satuan_po', {...e.value, po_id: json.po_id, dpm_id: json.dpm_id})
+                                if (update.status === 'success') {
+                                    window.location.reload()
+                                }
+                                toastFailed(update.message)
+                                // console.log({...e.value, po_id: json.po_id, dpm_id: json.dpm_id})
+                            }
+                        })
+                    })
+
+                    const choices = new Choices('#supplier');
+
+                    async function grandTotal() {
+                        const subTotal = $('.po-status')
+                        let total = 0
+                        for (let i = 0; i < subTotal.length; i++) {
+                            let hitung = subTotal[i].getAttribute('data-po-status')
+                            hitung = hitung == 0 ? subTotal[i].getAttribute('data-sub-total') : 0
+                            total += hitung * 1
+                        }
+                        $('#grand-total').html(total.toLocaleString('id-ID', {style: 'currency', currency: 'IDR'}))
+                    }
+
+                    $('#submit-perubahan').click(function() {
+                        swal.fire({
+                            icon: 'warning',
+                            title: 'Pastikan Data Sudah Benar',
+                            html: 'PO NOMOR : <%= po.po_number%><br>'+$('#grand-total').html(),
+                            confirmButtonText: 'SUBMIT',
+                            showCancelButton: true
+                        })
+                        .then( response => {
+                            if (response.isConfirmed) {
+                                submitPerubahan()
+                            }
+                        })
+                    })
+
+                    $(document).on('change', '.apple-status', async function() {
+                        const status = $(this)[0].checked ? 3 : 4
+                        const dpmId = $(this)[0].getAttribute('data-dpm-id')
+                        const update = await putData('/purchase_orders/update_status_apple', {status, dpmId})
+                        if (update.status == 'success') {
+                            $(this)[0].checked ? toastSuccess(update.message) : toastWarning(update.message)
+                        } else {
+                            toastFailed(update.message)
+                        }
+                        // console.log(update)
+                    })
+
+                    $(document).on('change', '.po-status', async function() {
+                        // GRAND TOTAL
+                        const status = $(this)[0].checked ? 0 : 1
+                        const po_id = $(this)[0].getAttribute('data-id')
+                        $(this).attr('data-po-status', status)
+                        await grandTotal()
+                        const update = await putData('/purchase_orders/update_status_item_po', {status, po_id})
+                        if (update.status == 'success') {
+                            $(this)[0].checked ? toastSuccess(update.message) : toastWarning(update.message)
+                        } else {
+                            toastFailed(update.message)
+                        }
+                    })
+                    async function submitPerubahan() {
+                        const payment = $('[name="payment"]').val()
+                        const jadwal = $('[name="jadwal"]').val()
+                        const alamat = $('[name="alamat"]').val()
+                        const penerima = $('[name="penerima"]').val()
+                        const syarat = $('[name="syarat"]').val()
+                        const catatan = $('[name="catatan"]').val()
+                        const tanggal = $('[name="tanggal"]').val()
+                        const supplier = $('[name="supplier"]').val()
+                        const item = $('.po-status')
+                        let arrData = []
+                        for (let i = 0; i < item.length; i++) {
+                            arrData.push({
+                                id: item[i].getAttribute('data-id'),
+                                status: item[i].getAttribute('data-po-status'),
+                                dpm_id: item[i].getAttribute('data-dpm-id'),
+                                payment, jadwal, alamat, penerima, syarat, catatan, tanggal, supplier
+                            })
+                        }
+                        postData('/purchase_orders/update_post', arrData)
+                        .then( e => {
+                            if (e.status == 'success') {
+                                toastSuccess(e.message)
+                                setTimeout(() => {
+                                    location.replace('/purchase_orders/pengajuan?project='+urlParams.get('project')+'&po_number='+urlParams.get('po_number'))
+                                }, 1500)
+                            } else {
+                                toastFailed(e.message)
+                            }
+                        })
+                    }
+
+                </script>
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

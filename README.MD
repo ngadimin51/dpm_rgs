@@ -1,5 +1,8 @@
 DPM Versi 7 NODEJS
 
+ubah group by pada mysql
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
 Daftar level pada aplikasi dpmOnline
     - staff
     - site logistic

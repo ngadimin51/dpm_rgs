@@ -15,6 +15,11 @@ const jwt = require('jsonwebtoken')
 const router = require('./router/router')
 const db = require('../src/models/DbConn')
 
+db.query("SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));", [], (err, result) => {
+  console.log('\n>> Change sql_mode to ONLY_FULL_GROUP_BY')
+  console.log({err, result})
+})
+
 let sql
 
 app.set('trust proxy')

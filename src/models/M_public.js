@@ -42,7 +42,7 @@ const checkUsername = async (req, res, username, password) => {
                 const userLevel = result[0].level
                 const userPicture = result[0].picture
 
-                const message = `*Anda baru saja login di ${hostName}*\nAbaikan pesan jika ini memang Anda*`
+                const message = `*${userName} baru saja login di ${hostName}*\nAbaikan pesan jika ini memang Anda*`
 
                 try {
                     whatsappNotif(userId, message).catch( err => { if (err) throw err})
